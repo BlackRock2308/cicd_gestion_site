@@ -13,7 +13,6 @@ import sn.ept.git.seminaire.cicd.mappers.SocieteMapper;
 import sn.ept.git.seminaire.cicd.mappers.vm.SocieteVMMapper;
 import sn.ept.git.seminaire.cicd.models.Societe;
 import sn.ept.git.seminaire.cicd.repositories.SocieteRepository;
-import sn.ept.git.seminaire.cicd.ressources.SocieteResource;
 import sn.ept.git.seminaire.cicd.services.ISocieteService;
 import sn.ept.git.seminaire.cicd.utils.ExceptionUtils;
 

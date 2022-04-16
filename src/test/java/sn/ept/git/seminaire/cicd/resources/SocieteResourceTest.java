@@ -238,7 +238,6 @@ class SocieteResourceTest extends BasicResourceTest {
                 .andExpect(status().isBadRequest());
     }
 
-
     @Test
     void update_withEmailMinLengthExceeded_shouldReturnBadRequest() throws Exception {
         dto = service.save(vm);

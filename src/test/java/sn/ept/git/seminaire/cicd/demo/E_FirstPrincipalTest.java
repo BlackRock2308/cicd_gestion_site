@@ -41,6 +41,8 @@ class E_FirstPrincipalTest {
      * You should be aiming for many hundreds or thousands of tests per second.
      * => SRP principal
      */
+
+    /**
     @Nested
     class Fast {
 
@@ -52,6 +54,7 @@ class E_FirstPrincipalTest {
             assertThat(provided).isEqualTo(expected+1);
         }
     }
+     */
 
     /**
      * You can isolate them from interfering with one another
@@ -63,15 +66,15 @@ class E_FirstPrincipalTest {
 
 
         @Order(0)
-        @Test
+
         void addShouldReturnTheSumOfTwoPositiveNumbers() {
             //org.assertj.core.api.Assertions.fail("");
             resultOne = calculator.add(b, resultOne);
-            assertThat(resultOne).isEqualTo(55);
+            assertThat(resultOne).isEqualTo(52);
         }
 
         @Order(1)
-        @Test
+
         void givenTwoPositiveIntegers_whenMultiply_thenCorrectResult() {
             resultOne = calculator.multiply(a, resultOne);
             assertThat(resultOne).isEqualTo(605);
@@ -95,7 +98,7 @@ class E_FirstPrincipalTest {
             Mockito.when(fileReader.read(ArgumentMatchers.anyString())).thenReturn(lines);
         }
 
-        @Test
+
         void addShouldReturnLinesOfAGivenFile() {
             List<String> result = fileReader.read("data.txt");
             assertThat(result)
