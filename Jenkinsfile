@@ -1,7 +1,7 @@
 node {
     try {
         stage('Checkout') {
-            bat "xcopy /E C:\\Users\\ASUS\\Desktop\\cicd_gestion_site> /Y"
+            bat "COPY /E C:\\Users\\ASUS\\Desktop\\cicd_gestion_site> /Y"
         }
         stage ('Package Stage') {
             bat './mvnw package'
