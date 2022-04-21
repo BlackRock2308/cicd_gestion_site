@@ -1,7 +1,7 @@
 node {
     try {
         stage('Checkout') {
-            bat "COPY /E C:\\Users\\ASUS\\Desktop\\cicd_gestion_site> /Y"
+            echo "Init"
         }
         stage ('Package Stage') {
             bat './mvnw package'
