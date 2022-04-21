@@ -1,4 +1,7 @@
 node {
+    tools {
+         maven "Maven"
+    }
     try {
         stage('Checkout') {
             echo "Init"
