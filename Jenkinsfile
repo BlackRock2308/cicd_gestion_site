@@ -71,8 +71,7 @@ pipeline {
             }
             def mvn = tool 'Maven';
             withSonarQubeEnv() {
-              sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=gestion-site-cicd-sonar"
-            }
+                bat "mvn sonar:sonar -Dsonar.login= 06ccbabcaff40aa03ab2c41d4baa9a1b0c999293 -Dsonar.host.url=http://localhost:9000"            }
           }
         }
 
@@ -86,7 +85,7 @@ pipeline {
         }
 
         // Release on Nexus
-
+/*
          stage('Deploy Artifact To Nexus') {
            when {
             branch 'master'
@@ -135,7 +134,7 @@ pipeline {
             }
            }
           }
-
+*/
 
 
 
