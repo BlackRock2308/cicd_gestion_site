@@ -1,11 +1,15 @@
-
 pipeline {
+parameters {
+        choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0'], description: '')
+        booleanParam(name: 'executeTests', defaultValue: true, description: '')
+    }
+
     agent any
 
      environment {
            NEXUS_VERSION = "nexus3"
            NEXUS_PROTOCOL = "http"
-           NEXUS_URL = "192.168.56.1:8081/repository/gestion_site_cicd_nexus/"
+           NEXUS_URL = "192.168.56.1:8081"
            NEXUS_REPOSITORY = "gestion_site_cicd_nexus"
            NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
        }
@@ -57,6 +61,19 @@ pipeline {
                 }
             }
         }
+
+        stage('SCM withy SonarQube') {
+                    checkout scm
+       }
+
+        stage('SonarQube Analysis') {
+            when {
+               branch 'master'
+                 }
+           def mvn = tool 'Maven';
+             withSonarQubeEnv() {
+              bat "mvn sonar:sonar -Dsonar.login= 06ccbabcaff40aa03ab2c41d4baa9a1b0c999293 -Dsonar.host.url=http://localhost:9000"            }
+           }
 
 
         stage("deploy") {
