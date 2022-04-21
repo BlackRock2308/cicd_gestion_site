@@ -2,6 +2,14 @@
 pipeline {
     agent any
 
+     environment {
+           NEXUS_VERSION = "nexus3"
+           NEXUS_PROTOCOL = "http"
+           NEXUS_URL = "192.168.56.1:8081/repository/gestion_site_cicd_nexus/"
+           NEXUS_REPOSITORY = "gestion_site_cicd_nexus"
+           NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
+       }
+
     options {
             timeout(time: 15, unit: 'MINUTES')
         }
