@@ -1,35 +1,22 @@
 
-def pingServerAfterDeployment( url){
-  def response = httpRequest url
-
-  if (response.status < 200 || response.status > 399){
-     error("Le déploiement ne s'est pas bien passé : code de retour sur URL ${url} : ${response.status}")
-     return
-  }else{
-      echo "Test de déploiement en environnement ${url} réussi ...."
-  }
-}
-
 pipeline {
-  agent any
+    agent any
 
     options {
-        timeout(time: 15, unit: 'MINUTES')
+            timeout(time: 15, unit: 'MINUTES')
+        }
+
+    parameters {
+        choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0'], description: '')
+        booleanParam(name: 'executeTests', defaultValue: true, description: '')
     }
 
     tools {
-      maven "Maven_3.3.9"
-    }
-
-    environment {
-            NEXUS_VERSION = "nexus3"
-            NEXUS_PROTOCOL = "http"
-            NEXUS_URL = "192.168.56.1:8081"
-            NEXUS_REPOSITORY = "gestion_site_cicd_nexus"
-            NEXUS_CREDENTIAL_ID = "nexus-credentials"
+          maven "Maven_3.3.9"
         }
 
     stages {
+
       stage('Check Scm Changelog') {
           steps {
               script {
@@ -56,138 +43,41 @@ pipeline {
                 }
               }
           }
-
-      }
-
-
-      stage('Tests') {
-          steps {
-            sh 'mvn clean test'
-          }
-
-          post {
-            success {
-                junit 'tracking/target/surefire-reports/**/*.xml'
-            }
-          }
-      }
-
-
-/**
-    stage('Quality gate') {
-      steps{
-        script{
-            withSonarQubeEnv('SonarQubeServer') {
-             sh 'mvn sonar:sonar'
-            echo 'Should deploy on REC env'
-           }
         }
       }
-    }**/
 
-    stage('Deploy DEV') {
-       when {
-          branch 'master'
-       }
-       steps {
-         echo 'Should deploy on DEV env'
-       }
-    }
-
-
-    stage('Check Deploy DEV ') {
-      when {
-          branch 'master'
-      }
-      steps {
-        script{
-            sleep time: 30, unit: 'SECONDS'
-            def url = 'http://178.170.114.95:8090/users-management/'
-             /*pingServerAfterDeployment (url)*/
-             echo 'Should deploy on DEV env'
-            }
-       }
-    }
-
-
-    stage('Deploy REC') {
-       when {
-          branch 'rec'
-       }
-       steps {
-         echo 'Should deploy on REC env'
-       }
-    }
-
-    stage('Check Deploy rec ') {
-      when {
-          branch 'develop'
-       }
-      steps {
-        script{
-            sleep time: 30, unit: 'SECONDS'
-            def url = 'http://178.170.114.95:8090/users-management/'
-            /*pingServerAfterDeployment (url)*/
-           }
-       }
-    }
-
-    stage('Release On Nexus') {
-       when {
-          branch 'release'
-       }
-       steps {
-          echo 'Release On Nexus'
-       }
-    }
-
-
-  stage("Publish to Nexus Repository Manager") {
-
-        steps {
-            script {
-                 pom = readMavenPom file: "pom.xml";
-                 filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
-                 echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
-                 artifactPath = filesByGlob[0].path;
-                 artifactExists = fileExists artifactPath;
-                 if(artifactExists) {
-                 echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
-                 nexusArtifactUploader(
-                 nexusVersion: NEXUS_VERSION,
-                 protocol: NEXUS_PROTOCOL,
-                 nexusUrl: NEXUS_URL,
-                 groupId: pom.groupId,
-                 version: pom.version,
-                 repository: NEXUS_REPOSITORY,
-                 credentialsId: NEXUS_CREDENTIAL_ID,
-                 artifacts: [
-                 [artifactId: pom.artifactId,
-                 classifier: '',
-                 file: artifactPath,
-                 type: pom.packaging],
-                 [artifactId: pom.artifactId,
-                 classifier: '',
-                 file: "pom.xml",
-                 type: "pom"]
-                      ]
-                      );
-                 } else {
-                      error "*** File: ${artifactPath}, could not be found";
-                 }
+        stage("init") {
+            steps {
+                script {
+                  echo 'Initialisation of the app'
+                }
             }
         }
-  }
-
-
-
-  }
-
-  post {
-
-    always{
-        sh 'mvn clean'
+        stage("build") {
+            steps {
+                script {
+                     echo 'Building of the app'
+                }
+            }
+        }
+        stage("test") {
+            when {
+                expression {
+                    params.executeTests
+                }
+            }
+            steps {
+                script {
+                     echo 'Testing of the app'
+                }
+            }
+        }
+        stage("deploy") {
+            steps {
+                script {
+                    echo 'Deployment of the app'
+                }
+            }
+        }
     }
-
-  }
 }
