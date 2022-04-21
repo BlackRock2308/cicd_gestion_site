@@ -62,16 +62,26 @@ parameters {
             }
         }
 
-       node {
+
          stage('SCM') {
-           git 'https://github.com/BlackRock2308/cicd_gestion_site.git'
+            steps {
+                script {
+                    git 'https://github.com/BlackRock2308/cicd_gestion_site.git'
+                }
+            }
+
          }
          stage('SonarQube analysis') {
-           withSonarQubeEnv(credentialsId: '06ccbabcaff40aa03ab2c41d4baa9a1b0c999293', installationName: 'My SonarQube Server') { // You can override the credential to be used
-             bat 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
-           }
+         steps {
+            script {
+                withSonarQubeEnv(credentialsId: '06ccbabcaff40aa03ab2c41d4baa9a1b0c999293', installationName: 'My SonarQube Server') { // You can override the credential to be used
+                 bat 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+                }
+            }
          }
-       }
+
+         }
+
 
 
         stage("deploy") {
