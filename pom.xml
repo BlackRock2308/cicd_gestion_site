@@ -3,11 +3,22 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<distributionManagement>
+		<repository>
+			<id>gestion-site-release</id>
+			<url>http://localhost:8081/repository/gestion-site-release/</url>
+		</repository>
 		<snapshotRepository>
-			<id>nexus-snapshots</id>
-			<url>http://192.168.56.1:8081/repository/maven-central/</url>
+			<id>gestion-site-snapshot</id>
+			<url>http://localhost:8081/repository/gestion-site-snapshot/</url>
 		</snapshotRepository>
 	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>gestion-site-maven-group</id>
+			<url>http://localhost:8081/repository/gestion-site-maven-group/</url>
+		</repository>
+	</repositories>
 
 
 	<modelVersion>4.0.0</modelVersion>
