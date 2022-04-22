@@ -10,7 +10,7 @@ parameters {
            NEXUS_VERSION = "nexus3"
            NEXUS_PROTOCOL = "http"
            NEXUS_URL = "192.168.56.1:8081"
-           NEXUS_REPOSITORY = "gestion_site_cicd_nexus"
+           NEXUS_REPOSITORY = "gestion-site-maven-group"
            NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
        }
 
@@ -74,7 +74,7 @@ parameters {
          stage('SonarQube analysis') {
          steps {
             script {
-                withSonarQubeEnv(credentialsId: '06ccbabcaff40aa03ab2c41d4baa9a1b0c999293', installationName: 'My SonarQube Server') { // You can override the credential to be used
+                withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'My SonarQube Server') { // You can override the credential to be used
                  bat 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
                 }
             }
