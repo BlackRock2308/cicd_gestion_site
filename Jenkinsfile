@@ -9,9 +9,9 @@ parameters {
      environment {
            NEXUS_VERSION = "nexus3"
            NEXUS_PROTOCOL = "http"
-           NEXUS_URL = "192.168.56.1:8081"
-           NEXUS_REPOSITORY = "gestion_site_cicd_nexus"
-           NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
+           NEXUS_URL = "localhost:8081"
+           NEXUS_REPOSITORY = "maven-central"
+           NEXUS_CREDENTIAL_ID = "admin"
        }
 
     options {
