@@ -30,14 +30,20 @@ pipeline {
         }
 
 
-          stage('SCM') {
-            checkout scm
-          }
-          stage('SonarQube Analysis') {
-            withSonarQubeEnv() {
-              bat "mvn clean verify sonar:sonar -Dsonar.projectKey=gestion-site-cicd-sonar"
+        stage('SCM') {
+           checkout scm
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                 script {
+                     withSonarQubeEnv() {
+                        bat "mvn clean verify sonar:sonar -Dsonar.projectKey=gestion-site-cicd-sonar"
+                     }
+                 }
             }
-          }
+
+        }
 
 
 
