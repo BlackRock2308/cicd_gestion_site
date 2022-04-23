@@ -91,7 +91,7 @@ pipeline {
          stage("Deploy to apache Server") {
         steps{
             script{
-                deploy adapters: [tomcat9(credentialsId: 'tomcat_credentials', path: '', url: 'http://localhost:8082')], contextPath: '/Tracking_ci_cd', onFailure: false, war: '**/*.jar'
+                deploy adapters: [tomcat9(credentialsId: 'tomcat_credentials', path: '', url: 'http://localhost:8082')], contextPath: '/Tracking_ci_cd', onFailure: false, war: '**/*.war'
             }
         }
     }
