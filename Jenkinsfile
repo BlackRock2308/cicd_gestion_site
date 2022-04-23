@@ -64,24 +64,15 @@ parameters {
 
 
          stage('SCM') {
-            steps {
-                script {
-                    git 'https://github.com/BlackRock2308/cicd_gestion_site.git'
-                }
-            }
+             checkout scm
+           }
 
-         }
-         stage('SonarQube analysis') {
-
-         steps {
-            script {
-                withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'My SonarQube Server') { // You can override the credential to be used
-                 bat 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
-                }
-            }
-         }
-
-         }
+           stage('SonarQube Analysis') {
+             def mvn = tool 'Default Maven';
+             withSonarQubeEnv() {
+               bat "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=gestion-site-cicd-sonar"
+             }
+           }
 
 
 
