@@ -38,7 +38,7 @@ pipeline {
             }
         }
 
-    stage("Quality gate") {
+    stage("SonarQube Analysis") {
         steps {
             script {
                 def scannerHome = tool 'My SonarQube Server';
@@ -53,6 +53,14 @@ pipeline {
             }
         }
 
+      }
+
+      stage("Quality Gate") {
+        steps {
+            script {
+                 waitForQualityGate abortPipeline: true
+            }
+        }
       }
 
        stage("Maven Build") {
