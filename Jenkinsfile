@@ -27,16 +27,19 @@ pipeline {
         stage('Tests') {
             steps {
                 script {
-                     bat 'mvn clean test'
+                    echo "Skip my test"
+                     //bat 'mvn clean test'
                 }
            }
 
             post {
                success {
-                   junit 'tracking/target/surefire-reports/**/*.xml'
+                echo "skip post test"
+                   //junit 'tracking/target/surefire-reports/**/*.xml'
                }
             }
         }
+
 
     stage("SonarQube Analysis") {
         steps {
