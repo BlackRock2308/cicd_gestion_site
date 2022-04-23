@@ -81,7 +81,7 @@ parameters {
          }
 
 **/
-        stage(deploy") {
+        stage("deploy") {
             steps {
                 script {
                     echo 'Deployment of the app'

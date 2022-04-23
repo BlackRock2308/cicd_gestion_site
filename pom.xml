@@ -4,11 +4,11 @@
 
 	<distributionManagement>
 		<repository>
-			<id>gestion-site-release</id>
+			<id>gestion-site-releases</id>
 			<url>http://localhost:8081/repository/gestion-site-release/</url>
 		</repository>
 		<snapshotRepository>
-			<id>gestion-site-snapshot</id>
+			<id>gestion-site-snapshots</id>
 			<url>http://localhost:8081/repository/gestion-site-snapshot/</url>
 		</snapshotRepository>
 	</distributionManagement>
@@ -175,7 +175,15 @@
 			<scope>test</scope>
 		</dependency>
 
-    </dependencies>
+		<!-- https://mvnrepository.com/artifact/org.sonatype.plugins/nexus-staging-maven-plugin -->
+		<dependency>
+			<groupId>org.sonatype.plugins</groupId>
+			<artifactId>nexus-staging-maven-plugin</artifactId>
+			<version>1.5.1</version>
+		</dependency>
+
+
+	</dependencies>
 
 	<build>
 		<finalName>tracking</finalName>
@@ -245,6 +253,26 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.5.1</version>
+				<executions>
+					<execution>
+						<id>default-deploy</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<serverId>nexus</serverId>
+					<nexusUrl>http://192.168.56.1:8081/</nexusUrl>
+					<skipStaging>true</skipStaging>
+				</configuration>
 			</plugin>
 
 		</plugins>
