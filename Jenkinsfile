@@ -1,7 +1,7 @@
 pipeline {
 
     agent any
-
+ 
     tools {
         maven "Maven"
     }
@@ -14,6 +14,7 @@ pipeline {
     }
 
     stages {
+      
         stage("Clone code from VCS") {
             steps {
                 script {
@@ -64,4 +65,7 @@ pipeline {
             }
         }
     }
+
 }
+
+
