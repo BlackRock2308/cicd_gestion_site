@@ -9,7 +9,7 @@ pipeline {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "192.168.56.1:8081"
-        NEXUS_REPOSITORY = "gestion-site-maven-group"
+        NEXUS_REPOSITORY = "maven-releases"
         NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
     }
 
@@ -24,7 +24,7 @@ pipeline {
         stage("Maven Build") {
             steps {
                 script {
-                    bat "mvn package -DskipTests=true"
+                    bat "mvn install -DskipTests=true"
                 }
             }
         }
