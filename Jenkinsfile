@@ -10,7 +10,7 @@ parameters {
            NEXUS_VERSION = "nexus3"
            NEXUS_PROTOCOL = "http"
            NEXUS_URL = "localhost:8081"
-           NEXUS_REPOSITORY = "maven-central"
+           NEXUS_REPOSITORY = "maven-snapshots"
            NEXUS_CREDENTIAL_ID = "admin"
        }
 
