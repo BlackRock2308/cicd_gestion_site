@@ -76,7 +76,7 @@ parameters {
          steps {
             script {
                 withSonarQubeEnv(credentialsId: 'ConnectJenkins', installationName: 'My SonarQube Server') { // You can override the credential to be used
-                 bat 'mvn sonar:sonar'
+                 bat 'mvn clean deploy sonar:sonar'
                 }
             }
          }
