@@ -23,15 +23,22 @@ pipeline {
                 }
             }
         }
-        stage("Maven Build") {
+
+        stage('Tests') {
             steps {
                 script {
-                    bat "mvn install"
+                     bat 'mvn clean test'
                 }
+           }
+
+            post {
+               success {
+                   junit 'tracking/target/surefire-reports/**/*.xml'
+               }
             }
         }
 
-    stage('SonarQube analysis') {
+    stage("Quality gate") {
         steps {
             script {
                 def scannerHome = tool 'My SonarQube Server';
@@ -47,6 +54,14 @@ pipeline {
         }
 
       }
+
+       stage("Maven Build") {
+           steps {
+               script {
+                   bat "mvn install"
+               }
+           }
+       }
 
 
 
