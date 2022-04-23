@@ -21,6 +21,7 @@ parameters {
 
     tools {
           maven "Maven"
+          jdk "jdk8"   
         }
 
     stages {
