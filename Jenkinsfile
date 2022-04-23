@@ -11,6 +11,7 @@ pipeline {
         NEXUS_URL = "192.168.56.1:8081"
         NEXUS_REPOSITORY = "gestion-site-snapshot"
         NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
+        SONAR_CREDENTIAL_ID = ""
     }
 
     stages {
@@ -29,26 +30,17 @@ pipeline {
             }
         }
 
-
-        stage('SCM') {
-            steps {
-                script {
-                    checkout scm
-                }
-            }
+    stage('SonarQube analysis') {
+        def scannerHome = tool 'My SonarQube Server';
+        withSonarQubeEnv('My SonarQube Server') {
+          bat "${scannerHome}/bin/sonar-scanner \
+          -D sonar.login=admin \
+          -D sonar.password=Lifeisagift30 \
+          -D sonar.projectKey=gestion-site-cicd-sonar \
+          -D sonar.exclusions=vendor/**,resources/**,**/*.java \
+          -D sonar.host.url=http://192.168.56.1:9000/"
         }
-
-        stage('SonarQube Analysis') {
-            steps {
-                 script {
-                     withSonarQubeEnv() {
-                        bat "mvn clean verify sonar:sonar -Dsonar.projectKey=gestion-site-cicd-sonar"
-                     }
-                 }
-            }
-
-        }
-
+      }
 
 
 
