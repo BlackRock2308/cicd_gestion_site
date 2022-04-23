@@ -75,8 +75,9 @@ parameters {
 
          steps {
             script {
-                withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'My SonarQube Server') { // You can override the credential to be used
-                 bat 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+                def mvn = tool 'Default Maven';
+                withSonarQubeEnv() { // You can override the credential to be used
+                  bat "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=gestion-site-cicd-sonar"
                 }
             }
          }
