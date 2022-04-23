@@ -64,15 +64,26 @@ parameters {
 
 
          stage('SCM') {
-             checkout scm
-           }
+            steps {
+                script {
+                     checkout scm
+                }
+            }
 
-           stage('SonarQube Analysis') {
-             def mvn = tool 'Default Maven';
-             withSonarQubeEnv() {
-               bat "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=gestion-site-cicd-sonar"
-             }
-           }
+         }
+         stage('SonarQube analysis') {
+
+         steps {
+            script {
+                def mvn = tool 'Default Maven';
+                withSonarQubeEnv() {
+                bat "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=gestion-site-cicd-sonar"
+                  }
+                }
+            }
+         }
+
+         }
 
 
 
