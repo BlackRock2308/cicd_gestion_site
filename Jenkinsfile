@@ -20,7 +20,7 @@ parameters {
 
 
     tools {
-          maven "Maven 3.8.5"
+          maven "Maven"
         }
 
     stages {
@@ -72,9 +72,7 @@ parameters {
 
          }
          stage('SonarQube analysis') {
-             when {
-                branch 'release'
-             }
+
          steps {
             script {
                 withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'My SonarQube Server') { // You can override the credential to be used
