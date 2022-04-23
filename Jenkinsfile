@@ -31,7 +31,11 @@ pipeline {
 
 
         stage('SCM') {
-           checkout scm
+            steps {
+                script {
+                    checkout scm
+                }
+            }
         }
 
         stage('SonarQube Analysis') {
