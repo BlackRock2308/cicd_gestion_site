@@ -29,6 +29,9 @@ pipeline {
             }
         }
         stage("Publish to Nexus Repository Manager") {
+            when {
+                branch 'feat-nexus-config'
+            }
             steps {
                 script {
                     pom = readMavenPom file: "pom.xml";
