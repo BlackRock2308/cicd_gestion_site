@@ -31,15 +31,20 @@ pipeline {
         }
 
     stage('SonarQube analysis') {
-        def scannerHome = tool 'My SonarQube Server';
-        withSonarQubeEnv('My SonarQube Server') {
-          bat "${scannerHome}/bin/sonar-scanner \
-          -D sonar.login=admin \
-          -D sonar.password=Lifeisagift30 \
-          -D sonar.projectKey=gestion-site-cicd-sonar \
-          -D sonar.exclusions=vendor/**,resources/**,**/*.java \
-          -D sonar.host.url=http://192.168.56.1:9000/"
+        steps {
+            script {
+                def scannerHome = tool 'My SonarQube Server';
+                 withSonarQubeEnv('My SonarQube Server') {
+                 bat "${scannerHome}/bin/sonar-scanner \
+                 -D sonar.login=admin \
+                 -D sonar.password=Lifeisagift30 \
+                 -D sonar.projectKey=gestion-site-cicd-sonar \
+                 -D sonar.exclusions=vendor/**,resources/**,**/*.java \
+                 -D sonar.host.url=http://192.168.56.1:9000/"
+                }
+            }
         }
+
       }
 
 
