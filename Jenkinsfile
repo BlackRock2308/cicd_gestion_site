@@ -50,11 +50,7 @@ parameters {
 
 
         stage("test") {
-            when {
-                expression {
-                    params.executeTests
-                }
-            }
+
             steps {
                 script {
                      echo 'Testing of the app'
@@ -62,7 +58,7 @@ parameters {
             }
         }
 
-
+/**
          stage('SCM') {
             steps {
                 script {
@@ -84,9 +80,8 @@ parameters {
 
          }
 
-
-
-        stage("deploy") {
+**/
+        stage(deploy") {
             steps {
                 script {
                     echo 'Deployment of the app'
