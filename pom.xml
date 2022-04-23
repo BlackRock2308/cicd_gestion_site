@@ -13,12 +13,7 @@
 		</snapshotRepository>
 	</distributionManagement>
 
-	<repositories>
-		<repository>
-			<id>gestion-site-maven-group</id>
-			<url>http://localhost:8081/repository/gestion-site-maven-group/</url>
-		</repository>
-	</repositories>
+
 
 
 	<modelVersion>4.0.0</modelVersion>
