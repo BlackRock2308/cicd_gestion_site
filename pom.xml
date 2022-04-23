@@ -28,9 +28,11 @@
 		<version>2.6.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
 	<groupId>sn.ept.git.seminaire</groupId>
 	<artifactId>cicd</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<version>1.0.0</version>
 	<name>tracking</name>
 	<description>Projet de tracking d'evenements</description>
 

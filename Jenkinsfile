@@ -58,6 +58,8 @@ parameters {
             }
         }
 
+
+
 /**
          stage('SCM') {
             steps {
@@ -81,6 +83,38 @@ parameters {
          }
 
 **/
+
+
+        stage("Build" ) {
+            steps {
+                script {
+                    bat 'mvn clean package'
+                }
+            }
+        }
+
+
+        stage("Upload to Nexus") {
+            steps {
+                nexusArtifactUploader artifacts [
+                    [
+                        artifactId: 'cicd',
+                        classifier: '',
+                        file: 'target/tracking-1.0.0.war',
+                        type: 'war',
+                    ]
+                ],
+                credentialsId: 'nexus3',
+                groupeId: 'sn.ept.git.seminaire',
+                nexusUrl: 'localhost',
+                nexusVersion: 'nexus3',
+                protocol: 'http',
+                repository: 'gestion-site-release',
+                version: '1.0.0',
+            }
+        }
+
+
         stage("deploy") {
             steps {
                 script {
