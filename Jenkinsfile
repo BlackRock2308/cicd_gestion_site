@@ -63,7 +63,7 @@ pipeline {
        stage("Maven Build") {
            steps {
                script {
-                   bat "mvn install"
+                   bat "mvn install -DskipTests=true"
                }
            }
        }
