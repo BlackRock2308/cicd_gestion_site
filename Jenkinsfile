@@ -1,5 +1,6 @@
 pipeline {
 
+
     agent any
 
      environment {
@@ -37,59 +38,21 @@ pipeline {
             }
         }
 
+        stage("test") {
+            steps {
+                 script {
+                      echo 'Testing of the app'
+                 }
+            }
+        }
+
         stage("build") {
             steps {
                 script {
-                     echo 'Building of the app'
+                     bat 'mvn clean package'
                 }
             }
         }
-
-
-        stage("test") {
-
-            steps {
-                script {
-                     echo 'Testing of the app'
-                }
-            }
-        }
-
-
-
-/**
-         stage('SCM') {
-            steps {
-                script {
-                     checkout scm
-                }
-            }
-
-         }
-         stage('SonarQube analysis') {
-
-         steps {
-            script {
-                def mvn = tool 'Default Maven';
-                withSonarQubeEnv() { // You can override the credential to be used
-                  bat "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=gestion-site-cicd-sonar"
-                }
-            }
-         }
-
-         }
-
-**/
-
-
-        stage("Build" ) {
-            steps {
-                script {
-                    bat 'mvn clean package'
-                }
-            }
-        }
-
 
         stage("Upload to Nexus") {
             steps {
@@ -111,7 +74,6 @@ pipeline {
             }
         }
 
-
         stage("deploy") {
             steps {
                 script {
@@ -119,4 +81,6 @@ pipeline {
                 }
             }
         }
+    }
+
 }
