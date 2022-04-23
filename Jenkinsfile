@@ -11,6 +11,7 @@ pipeline {
         NEXUS_URL = "192.168.56.1:8081"
         NEXUS_REPOSITORY = "gestion-site-snapshot"
         NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
+        SONAR_CREDENTIAL_ID = ""
     }
 
     stages {
@@ -29,6 +30,26 @@ pipeline {
                 }
             }
         }
+
+    stage('SonarQube analysis') {
+        steps {
+            script {
+                def scannerHome = tool 'My SonarQube Server';
+                 withSonarQubeEnv('My SonarQube Server') {
+                 bat "${scannerHome}/bin/sonar-scanner \
+                 -D sonar.login=admin \
+                 -D sonar.password=Lifeisagift30 \
+                 -D sonar.projectKey=gestion-site-cicd-sonar \
+                 -D sonar.exclusions=vendor/**,resources/**,**/*.java \
+                 -D sonar.host.url=http://192.168.56.1:9000/"
+                }
+            }
+        }
+
+      }
+
+
+
         stage("Publish to Nexus Repository Manager") {
             when {
                 branch 'feat-nexus-config'
