@@ -24,7 +24,7 @@ pipeline {
         stage("Maven Build") {
             steps {
                 script {
-                    sh "mvn package -DskipTests=true"
+                    bat "mvn package -DskipTests=true"
                 }
             }
         }
