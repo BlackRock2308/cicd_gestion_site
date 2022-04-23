@@ -28,6 +28,20 @@ pipeline {
                 }
             }
         }
+
+
+          stage('SCM') {
+            checkout scm
+          }
+          stage('SonarQube Analysis') {
+            withSonarQubeEnv() {
+              bat "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=gestion-site-cicd-sonar"
+            }
+          }
+
+
+
+
         stage("Publish to Nexus Repository Manager") {
             when {
                 branch 'feat-nexus-config'
