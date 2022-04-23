@@ -35,7 +35,7 @@ pipeline {
           }
           stage('SonarQube Analysis') {
             withSonarQubeEnv() {
-              bat "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=gestion-site-cicd-sonar"
+              bat "mvn clean verify sonar:sonar -Dsonar.projectKey=gestion-site-cicd-sonar"
             }
           }
 
