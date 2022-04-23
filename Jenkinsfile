@@ -4,6 +4,7 @@ pipeline {
         
     tools {
         maven "Maven"
+         jdk "JDK"
     }
     environment {
         NEXUS_VERSION = "nexus3"
@@ -14,6 +15,14 @@ pipeline {
     }
         
     stages {
+            
+         stage('Initialize')
+            {
+            steps {
+                echo "PATH = ${M2_HOME}/bin:${PATH}"
+                echo "M2_HOME = /opt/maven"
+            }
+                    
         stage("Clone code from VCS") {
             steps {
                 script {
