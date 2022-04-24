@@ -62,13 +62,13 @@ pipeline {
 
     stage("Quality Gate") {
         steps {
-        script {
-            sleep(10)
-                        qualitygate = waitForQualityGate()
-                        if (qualitygate.status != "OK") {
-                            currentBuild.result = "FAILURE"
-                        }
-        }
+            script {
+                sleep(60)
+                print "Finished waiting"
+                 if (qg.status != 'OK') {
+                      error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                 }
+            }
 
         }
     }
