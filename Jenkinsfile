@@ -1,3 +1,5 @@
+EmailReceivers = 'smbaye@ept.sn,mbayemc2@gmail.com'
+
 pipeline {
 
     agent any
@@ -67,6 +69,22 @@ pipeline {
                }
            }
        }
+
+      post {
+
+          always{
+              sh 'mvn clean'
+          }
+
+         changed {
+            emailext attachLog: true, body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT',  to: EmailReceivers
+         }
+
+          failure {
+                  emailext attachLog: true, body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT',  to: EmailReceivers
+          }
+
+        }
 
 
 
