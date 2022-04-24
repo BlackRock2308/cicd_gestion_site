@@ -60,6 +60,15 @@ pipeline {
 
       }
 
+    stage("Quality Gate") {
+        steps {
+            sleep(10)
+            qualitygate = waitForQualityGate()
+            if (qualitygate.status != "OK") {
+                currentBuild.result = "FAILURE"
+            }
+        }
+    }
 
 
        stage("Maven Build") {
@@ -123,7 +132,6 @@ pipeline {
                    }
 
                    always {
-
                       // send to email
                       emailext (
                           subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
@@ -131,12 +139,7 @@ pipeline {
                             <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
                           recipientProviders: [[$class: 'DevelopersRecipientProvider']]
                         )
-                        //emailext attachLog: false,
-                          //attachmentsPattern: 'example_file.yaml',
-                          //from: 'smbaye@ept.sn',
-                          //body: 'Test Message',
-                          //subject: 'Test Subject',
-                          //to: 'smbaye@ept.sn'
+
                    }
              }
         }
