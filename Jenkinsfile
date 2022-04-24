@@ -54,7 +54,7 @@ pipeline {
             script {
                 def scannerHome = tool 'My SonarQube Server';
                  withSonarQubeEnv('My SonarQube Server') {
-                 bat "${scannerHome}/bin/sonar-scanner \
+                 bat " mvn clean ${scannerHome}/bin/sonar-scanner \
                  -D sonar.login=admin \
                  -D sonar.password=Lifeisagift30 \
                  -D sonar.projectKey=gestion-site-cicd-sonar \
