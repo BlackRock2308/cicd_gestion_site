@@ -51,9 +51,7 @@ pipeline {
 
 
         stage("Publish to Nexus Repository Manager") {
-            when {
-                branch 'develop_prime'
-            }
+            
             steps {
                 script {
                     pom = readMavenPom file: "pom.xml";
