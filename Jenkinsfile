@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script {
                     //echo "Skip my test"
-                     bat 'mvn clean test'
+                     bat 'mvn test'
                 }
            }
 
