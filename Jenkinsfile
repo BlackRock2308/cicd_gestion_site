@@ -114,23 +114,25 @@ pipeline {
         }
 
         stage("Email Notification") {
-                post {
-                           always{
-                               echo "Hello World"
-                           }
+             steps {
 
-                          changed {
-                             emailext attachLog: true, body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT',  to: EmailReceivers
-                          }
+                       post {
+                                  always{
+                                      echo "Hello World"
+                                  }
 
-                           failure {
-                                   emailext attachLog: true, body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT',  to: EmailReceivers
-                           }
+                                 changed {
+                                    emailext attachLog: true, body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT',  to: EmailReceivers
+                                 }
 
-                }
+                                  failure {
+                                          emailext attachLog: true, body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT',  to: EmailReceivers
+                                  }
+
+                              }
+             }
 
         }
-
     }
 
 
