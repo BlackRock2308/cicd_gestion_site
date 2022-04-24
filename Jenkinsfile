@@ -123,9 +123,12 @@ pipeline {
                    }
 
                    always {
-                        emailext body: '$DEFAULT_CONTENT',
-                            subject: '$DEFAULT_SUBJECT',
-                            to:  EmailReceivers
+                        emailext attachLog: false,
+                          attachmentsPattern: 'example_file.yaml',
+                          from: 'smbaye@ept.sn',
+                          body: 'Test Message',
+                          subject: 'Test Subject',
+                          to: 'smbaye@ept.sn'
                    }
              }
         }
