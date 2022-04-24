@@ -129,7 +129,7 @@ pipeline {
                           subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
                           body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
                             <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
-                          recipientProviders: "mbayemc2@gmail.com"
+                          recipientProviders: [[$class: 'DevelopersRecipientProvider']]
                         )
                         //emailext attachLog: false,
                           //attachmentsPattern: 'example_file.yaml',
