@@ -27,6 +27,7 @@ pipeline {
             steps {
                 script {
                     bat "mvn clean  -DskipTests=true"
+                    bat "mvn install"
                 }
             }
         }
