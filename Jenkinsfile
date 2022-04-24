@@ -123,7 +123,9 @@ pipeline {
                    }
 
                    always {
-                        echo "This block run always"
+                        emailext body: '$DEFAULT_CONTENT',
+                            subject: '$DEFAULT_SUBJECT',
+                            to:  EmailReceivers
                    }
              }
         }
