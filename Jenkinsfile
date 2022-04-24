@@ -118,6 +118,8 @@ pipeline {
                   echo "Send Mail"
              }
         }
+
+    }
         post {
            always{
                  echo "Hello World"
@@ -132,7 +134,7 @@ pipeline {
          }
 
 
-    }
+
 
 
 
