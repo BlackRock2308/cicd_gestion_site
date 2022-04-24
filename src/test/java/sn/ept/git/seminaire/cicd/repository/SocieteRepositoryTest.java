@@ -3,6 +3,7 @@ package sn.ept.git.seminaire.cicd.repository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import sn.ept.git.seminaire.cicd.data.SocieteDTOTestData;
 import sn.ept.git.seminaire.cicd.dto.SocieteDTO;
 import sn.ept.git.seminaire.cicd.mappers.SocieteMapper;
@@ -14,6 +15,8 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
+@Component
 class SocieteRepositoryTest extends RepositoryBaseTest {
 
     @Autowired
@@ -21,7 +24,7 @@ class SocieteRepositoryTest extends RepositoryBaseTest {
     SocieteDTO dto;
     Societe entity;
     @Autowired
-    protected SocieteMapper mapper;
+    SocieteMapper mapper;
 
 
     @BeforeEach

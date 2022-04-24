@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.stereotype.Component;
 import sn.ept.git.seminaire.cicd.dto.BaseDTO;
 import sn.ept.git.seminaire.cicd.utils.SizeMapping;
 

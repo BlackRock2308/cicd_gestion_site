@@ -3,6 +3,7 @@ package sn.ept.git.seminaire.cicd.services;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import sn.ept.git.seminaire.cicd.CicdApplicationTests;
@@ -11,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = {CicdApplicationTests.class})
 @Transactional
+@TestExecutionListeners({})
 class ServiceBaseTest {
 
     public static final int DEFAULT_SIZE = 10;

@@ -1,4 +1,4 @@
-package sn.ept.git.seminaire.cicd.ressources;
+package sn.ept.git.seminaire.cicd.resources;
 
 
 import org.springframework.http.HttpStatus;

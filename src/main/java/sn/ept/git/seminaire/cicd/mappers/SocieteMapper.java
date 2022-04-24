@@ -1,11 +1,12 @@
 package sn.ept.git.seminaire.cicd.mappers;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 import sn.ept.git.seminaire.cicd.dto.SocieteDTO;
 import sn.ept.git.seminaire.cicd.mappers.generic.GenericMapper;
 import sn.ept.git.seminaire.cicd.models.Societe;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface SocieteMapper extends GenericMapper<Societe, SocieteDTO> {
 
 }
