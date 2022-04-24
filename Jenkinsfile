@@ -52,7 +52,7 @@ pipeline {
 
         stage("Publish to Nexus Repository Manager") {
             when {
-                branch 'release'
+                branch 'develop_prime'
             }
             steps {
                 script {
