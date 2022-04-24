@@ -49,7 +49,7 @@ pipeline {
       }
 
 
-/*
+
         stage("Publish to Nexus Repository Manager") {
             
             steps {
@@ -85,7 +85,7 @@ pipeline {
                     }
                 }
             }
-        }*/
+        }
          stage("Deploy to apache Server") {
         steps{
             script{
