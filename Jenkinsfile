@@ -112,21 +112,27 @@ pipeline {
                 }
             }
         }
+
+        stage("Email Notification") {
+                post {
+                           always{
+                               echo "Hello World"
+                           }
+
+                          changed {
+                             emailext attachLog: true, body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT',  to: EmailReceivers
+                          }
+
+                           failure {
+                                   emailext attachLog: true, body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT',  to: EmailReceivers
+                           }
+
+                }
+
+        }
+
     }
 
-      post {
-              always{
-                  echo "Hello World"
-              }
 
-             changed {
-                emailext attachLog: true, body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT',  to: EmailReceivers
-             }
-
-              failure {
-                      emailext attachLog: true, body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT',  to: EmailReceivers
-              }
-
-          }
 
 }
