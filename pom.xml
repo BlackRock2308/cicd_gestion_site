@@ -184,19 +184,27 @@
 	<build>
 		<finalName>tracking</finalName>
 		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-
+		      <plugin>
+			
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-war-plugin</artifactId>
+			 <version>3.1.0</version>
+			<executions>
+				<execution>
+					<id>default-war</id>
+					<phase>prepare-package</phase>
+			
+					    <configuration>
+			
+						<failOnMissingWebXml>false</failOnMissingWebXml>
+			
+					    </configuration>
+			
+					</execution>
+			
+				    </executions>
+			
+				</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
