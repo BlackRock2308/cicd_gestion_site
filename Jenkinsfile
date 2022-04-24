@@ -117,21 +117,22 @@ pipeline {
              steps {
                   echo "Send Mail"
              }
+             post {
+                   success {
+                          echo "This block runs when the stage succeeded."
+                   }
+
+                   always {
+                        echo "This block run always"
+                   }
+             }
         }
 
-    }
-        post {
-           always{
-                 echo "Hello World"
-           }
-           changed {
-                 emailext attachLog: true, body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT',  to: EmailReceivers
-           }
-           failure {
-                 emailext attachLog: true, body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT',  to: EmailReceivers
-              }
 
-         }
+
+
+    }
+
 
 
 
