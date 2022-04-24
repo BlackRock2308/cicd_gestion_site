@@ -62,6 +62,45 @@ pipeline {
 
 
 
+      stage("Quality Gate"){
+
+      steps {
+            script {
+
+                deleteDir()
+                          unstash 'sonar-report-task'
+                          def props = utils.getProperties("target/sonar/report-task.txt")
+                          echo "properties=${props}"
+                          def sonarServerUrl=props.getProperty('serverUrl')
+                          def ceTaskUrl= props.getProperty('ceTaskUrl')
+                          def ceTask
+                          def URL url = new URL(ceTaskUrl)
+                            timeout(time: 1, unit: 'MINUTES') {
+                              waitUntil {
+                                ceTask = utils.jsonParse(url)
+                                echo ceTask.toString()
+                                return "SUCCESS".equals(ceTask["task"]["status"])
+                              }
+                            }
+                            url = new URL(sonarServerUrl + "/api/qualitygates/project_status?analysisId=" + ceTask["task"]["analysisId"] )
+                            def qualitygate =  utils.jsonParse(url)
+                            echo qualitygate.toString()
+                            if ("ERROR".equals(qualitygate["projectStatus"]["status"])) {
+                              error  "Quality Gate failure"
+                            }
+            }
+      }
+
+  }
+
+
+
+
+
+
+
+
+
        stage("Maven Build") {
            steps {
                script {
@@ -123,7 +162,6 @@ pipeline {
                    }
 
                    always {
-
                       // send to email
                       emailext (
                           subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
@@ -131,12 +169,7 @@ pipeline {
                             <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
                           recipientProviders: [[$class: 'DevelopersRecipientProvider']]
                         )
-                        //emailext attachLog: false,
-                          //attachmentsPattern: 'example_file.yaml',
-                          //from: 'smbaye@ept.sn',
-                          //body: 'Test Message',
-                          //subject: 'Test Subject',
-                          //to: 'smbaye@ept.sn'
+
                    }
              }
         }
@@ -152,4 +185,6 @@ pipeline {
 
 
 
+
 }
+
