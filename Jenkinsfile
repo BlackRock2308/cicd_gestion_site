@@ -1,7 +1,9 @@
+EmailReceivers = 'smbaye@ept.sn'
+
 pipeline {
 
     agent any
- 
+
     tools {
         maven "Maven"
     }
@@ -15,7 +17,7 @@ pipeline {
     }
 
     stages {
-      
+
         stage("Clone code from VCS") {
             steps {
                 script {
@@ -23,15 +25,25 @@ pipeline {
                 }
             }
         }
-        stage("Maven Build") {
+
+        stage('Tests') {
             steps {
                 script {
-                    bat "mvn install -DskipTests=true"
+                    echo "Skip my test"
+                     //bat 'mvn clean test'
                 }
+           }
+
+            post {
+               success {
+                echo "skip post test"
+                   //junit 'tracking/target/surefire-reports/**/*.xml'
+               }
             }
         }
 
-    stage('SonarQube analysis') {
+
+    stage("SonarQube Analysis") {
         steps {
             script {
                 def scannerHome = tool 'My SonarQube Server';
@@ -47,6 +59,18 @@ pipeline {
         }
 
       }
+
+
+
+       stage("Maven Build") {
+           steps {
+               script {
+                   bat "mvn install -DskipTests=true"
+               }
+           }
+       }
+
+
 
 
 
@@ -88,8 +112,44 @@ pipeline {
                 }
             }
         }
+
+        stage("Email Notification") {
+             steps {
+                  echo "Send Mail"
+             }
+             post {
+                   success {
+                          echo "This block runs when the stage succeeded."
+                   }
+
+                   always {
+
+                      // send to email
+                      emailext (
+                          subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                          body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                            <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+                          recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                        )
+                        //emailext attachLog: false,
+                          //attachmentsPattern: 'example_file.yaml',
+                          //from: 'smbaye@ept.sn',
+                          //body: 'Test Message',
+                          //subject: 'Test Subject',
+                          //to: 'smbaye@ept.sn'
+                   }
+             }
+        }
+
+
+
+
     }
 
+
+
+
+
+
+
 }
-
-
