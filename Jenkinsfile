@@ -72,13 +72,19 @@ pipeline {
 
           steps {
                 script {
-                    timeout(time: 13, unit: 'MINUTES') { // Just in case something goes wrong, pipeline will be killed after a timeout
-                        def qg = waitForQualityGate // Reuse taskId previously collected by withSonarQubeEnv
-                        if (qg.status != 'OK') {
-                            error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                        }
+                    timeout(time: 1, unit: 'HOURS') {
+                        def qg = waitForQualityGate()
+                         if(qg.status != 'OK') {
+                            emailext (
+                               subject: "POST TEST: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                                body: """<p>TEST STATUS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                                <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+                                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                                )
+                                error "Pipeline aborded due to quality Gate failure ${qg.status}"
+                         }
                     }
-               }
+                }
           }
       }
 
