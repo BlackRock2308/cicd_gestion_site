@@ -72,7 +72,7 @@ pipeline {
 
           steps {
                 script {
-                   sleep(60)
+                   //sleep(60)
                    timeout(time: 1, unit: 'HOURS') {
                        def qg = waitForQualityGate()
                        print "Finished waiting"
