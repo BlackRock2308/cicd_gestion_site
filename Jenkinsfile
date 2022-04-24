@@ -1,4 +1,4 @@
-EmailReceivers = 'smbaye@ept.sn,mbayemc2@gmail.com'
+EmailReceivers = 'smbaye@ept.sn'
 
 pipeline {
 
