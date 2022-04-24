@@ -72,11 +72,7 @@ pipeline {
 
        post {
           always{
-              steps {
-                    script {
-                       bat 'mvn clean'
-                  }
-            }
+              echo "Hello World"
           }
 
          changed {
