@@ -29,14 +29,20 @@ pipeline {
         stage('Tests') {
             steps {
                 script {
-                    echo "Skip my test"
-                     //bat 'mvn clean test'
+                    //echo "Skip my test"
+                     bat 'mvn clean'
                 }
            }
 
             post {
-               success {
-                echo "skip post test"
+               failure {
+                // send to email
+                 emailext (
+                      subject: "POST TEST: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                       body: """<p>TEST STATUS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                       <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+                        recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                       )
                    //junit 'tracking/target/surefire-reports/**/*.xml'
                }
             }
@@ -61,37 +67,20 @@ pipeline {
       }
 
 
-
+/**
       stage("Quality Gate"){
 
-      steps {
-            script {
+          steps {
+                script {
 
-                deleteDir()
-                          unstash 'sonar-report-task'
-                          def props = utils.getProperties("target/sonar/report-task.txt")
-                          echo "properties=${props}"
-                          def sonarServerUrl=props.getProperty('serverUrl')
-                          def ceTaskUrl= props.getProperty('ceTaskUrl')
-                          def ceTask
-                          def URL url = new URL(ceTaskUrl)
-                            timeout(time: 1, unit: 'MINUTES') {
-                              waitUntil {
-                                ceTask = utils.jsonParse(url)
-                                echo ceTask.toString()
-                                return "SUCCESS".equals(ceTask["task"]["status"])
-                              }
-                            }
-                            url = new URL(sonarServerUrl + "/api/qualitygates/project_status?analysisId=" + ceTask["task"]["analysisId"] )
-                            def qualitygate =  utils.jsonParse(url)
-                            echo qualitygate.toString()
-                            if ("ERROR".equals(qualitygate["projectStatus"]["status"])) {
-                              error  "Quality Gate failure"
-                            }
-            }
-      }
+                    timeout(time: 1, unit: 'HOURS') {
 
-  }
+                        waitForQualityGate abortPipeline: true
+                   }
+                }
+          }
+
+       } **/
 
 
 
