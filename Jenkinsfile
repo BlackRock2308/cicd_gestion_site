@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script {
                     //echo "Skip my test"
-                     bat 'mvn test'
+                     bat 'mvn test -Dmaven.test.failure.ignore=true'
                 }
            }
 

@@ -2,6 +2,7 @@ package sn.ept.git.seminaire.cicd.mappers.generic;
 
 import java.util.List;
 
+
 public interface GenericMapper<E, D> {
 
     E asEntity(D d);

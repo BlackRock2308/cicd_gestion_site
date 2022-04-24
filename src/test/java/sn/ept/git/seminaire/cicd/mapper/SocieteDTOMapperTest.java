@@ -1,22 +1,40 @@
 package sn.ept.git.seminaire.cicd.mapper;
 
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import sn.ept.git.seminaire.cicd.data.SocieteDTOTestData;
 import sn.ept.git.seminaire.cicd.dto.SocieteDTO;
 import sn.ept.git.seminaire.cicd.mappers.SocieteMapper;
+import sn.ept.git.seminaire.cicd.mappers.SocieteMapperImpl;
+import sn.ept.git.seminaire.cicd.mappers.vm.SocieteVMMapperImpl;
 import sn.ept.git.seminaire.cicd.models.Societe;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
+
+@ExtendWith(SpringExtension.class) // JUnit 5
+@ContextConfiguration(classes = {
+        SocieteVMMapperImpl.class,
+        SocieteMapperImpl.class
+})
 class SocieteVMMapperTest extends  MapperBaseTest{
 
     SocieteDTO dto;
     Societe entity;
 
     @Autowired
-    private SocieteMapper mapper;
+    private  SocieteMapper mapper;
+
+
 
 
     @BeforeEach
