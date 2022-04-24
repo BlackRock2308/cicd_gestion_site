@@ -63,29 +63,34 @@ pipeline {
 
 
       stage("Quality Gate"){
-      node("sonar") {
-          deleteDir()
-          unstash 'sonar-report-task'
-          def props = utils.getProperties("target/sonar/report-task.txt")
-          echo "properties=${props}"
-          def sonarServerUrl=props.getProperty('serverUrl')
-          def ceTaskUrl= props.getProperty('ceTaskUrl')
-          def ceTask
-          def URL url = new URL(ceTaskUrl)
-            timeout(time: 1, unit: 'MINUTES') {
-              waitUntil {
-                ceTask = utils.jsonParse(url)
-                echo ceTask.toString()
-                return "SUCCESS".equals(ceTask["task"]["status"])
-              }
+
+      steps {
+            script {
+
+                deleteDir()
+                          unstash 'sonar-report-task'
+                          def props = utils.getProperties("target/sonar/report-task.txt")
+                          echo "properties=${props}"
+                          def sonarServerUrl=props.getProperty('serverUrl')
+                          def ceTaskUrl= props.getProperty('ceTaskUrl')
+                          def ceTask
+                          def URL url = new URL(ceTaskUrl)
+                            timeout(time: 1, unit: 'MINUTES') {
+                              waitUntil {
+                                ceTask = utils.jsonParse(url)
+                                echo ceTask.toString()
+                                return "SUCCESS".equals(ceTask["task"]["status"])
+                              }
+                            }
+                            url = new URL(sonarServerUrl + "/api/qualitygates/project_status?analysisId=" + ceTask["task"]["analysisId"] )
+                            def qualitygate =  utils.jsonParse(url)
+                            echo qualitygate.toString()
+                            if ("ERROR".equals(qualitygate["projectStatus"]["status"])) {
+                              error  "Quality Gate failure"
+                            }
             }
-            url = new URL(sonarServerUrl + "/api/qualitygates/project_status?analysisId=" + ceTask["task"]["analysisId"] )
-            def qualitygate =  utils.jsonParse(url)
-            echo qualitygate.toString()
-            if ("ERROR".equals(qualitygate["projectStatus"]["status"])) {
-              error  "Quality Gate failure"
-            }
-     }
+      }
+
   }
 
 
