@@ -71,10 +71,13 @@ pipeline {
        }
 
       post {
-
           always{
-              sh 'mvn clean'
+              steps {
+                script {
+                   bat 'mvn clean'
+              }
           }
+      }
 
          changed {
             emailext attachLog: true, body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT',  to: EmailReceivers
