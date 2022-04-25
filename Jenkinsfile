@@ -105,6 +105,7 @@ pipeline {
                 steps {
                     script {
                         echo 'Should deploy on DEV env'
+                        bat "mvn install -Dmaven.test.failure.ignore=true"
                     }
                 }
        }
@@ -130,7 +131,7 @@ pipeline {
             steps {
                 script {
                     echo 'Should deploy on REC env'
-                    bat "mvn deploy -Dmaven.test.failure.ignore=true"
+                    bat "mvn install -Dmaven.test.failure.ignore=true"
                 }
             }
        }
