@@ -125,7 +125,7 @@ pipeline {
 
        stage('Deploy REC') {
             when {
-               branch 'rec'
+               branch 'feat-nexus-config'
             }
             steps {
                 script {
