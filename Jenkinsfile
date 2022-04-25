@@ -205,7 +205,7 @@ pipeline {
             steps {
                 script {
                     echo "Send Mail"
-                    bat "mvn clean"
+                    //bat "mvn clean"
                 }
             }
           post {
