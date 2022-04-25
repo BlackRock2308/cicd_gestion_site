@@ -80,6 +80,16 @@ pipeline {
         }
 
 
+       stage("Jacoco Code Coverage") {
+            steps {
+                script {
+                    echo "Code coverage"
+                    jacoco()
+                }
+            }
+       }
+
+
         stage("SonarQube Analysis") {
             steps {
                 script {
@@ -168,7 +178,6 @@ pipeline {
                 }
             }
        }
-
 
 
        stage("Release on Nexus") {
