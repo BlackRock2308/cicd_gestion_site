@@ -1,5 +1,18 @@
 EmailReceivers = 'smbaye@ept.sn'
 
+
+def pingServerAfterDeployment( url){
+  def response = httpRequest url
+
+  if (response.status < 200 || response.status > 399){
+     error("Le déploiement ne s'est pas bien passé : code de retour sur URL ${url} : ${response.status}")
+     return
+  }else{
+      echo "Test de déploiement en environnement ${url} réussi, Kudos ...."
+  }
+}
+
+
 pipeline {
 
     agent any
@@ -11,7 +24,7 @@ pipeline {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "192.168.56.1:8081"
-        NEXUS_REPOSITORY = "gestion-site-snapshot"
+        NEXUS_REPOSITORY = "gestion-site-release"
         NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
         SONAR_CREDENTIAL_ID = ""
     }
@@ -29,7 +42,6 @@ pipeline {
         stage('Tests') {
             steps {
                 script {
-                    //echo "Skip my test"
                      bat 'mvn clean test -Dmaven.test.failure.ignore=true'
                 }
            }
@@ -77,13 +89,11 @@ pipeline {
         }
 
         stage("Quality Gate"){
-
               steps {
                     script {
                         timeout(time: 1, unit: 'HOURS') {
                             waitForQualityGate abortPipeline: true
                         }
-
                     }
               }
         }
@@ -106,7 +116,8 @@ pipeline {
               steps {
                 script{
                     //sleep time: 30, unit: 'SECONDS'
-                    //def url = 'http://178.170.114.95:8090/users-management/'
+                    //def url = 'http://localhost:8085/'
+                    /*pingServerAfterDeployment (url)*/
                      echo 'Should deploy on DEV env'
                     }
                }
@@ -128,15 +139,14 @@ pipeline {
                branch 'rec'
             }
            steps {
-             script{
+                 script{
                     echo "Should Deploy on REC env"
-                 //sleep time: 30, unit: 'SECONDS'
-                 //def url = 'http://178.170.114.95:8090/users-management/'
-             }
-          }
+                    sleep time: 30, unit: 'SECONDS'
+                    def url = 'http://localhost:8085/users-management/'
+                    pingServerAfterDeployment (url)
+                 }
+           }
        }
-
-
 
 
 
@@ -205,7 +215,7 @@ pipeline {
             steps {
                 script {
                     echo "Send Mail"
-                    bat "mvn clean"
+                    //bat "mvn clean"
                 }
             }
           post {
