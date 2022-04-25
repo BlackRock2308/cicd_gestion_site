@@ -18,37 +18,6 @@ pipeline {
 
     stages {
 
-        stage('Check Scm Changelog') {
-                  steps {
-                      script {
-                        def changeLogSets = currentBuild.changeSets
-                        for (int i = 0; i < changeLogSets.size(); i++) {
-                            def entries = changeLogSets[i].items
-                            for (int j = 0; j < entries.length; j++) {
-                                def entry = entries[j]
-                                if(entry.author.toString().contains('Jenkins') || entry.msg.contains('maven-release-plugin')){
-                                    echo "Les Commit effectués par le user jenkins sont toujours ignorés. C'est le cas des releases effectuées depuis la chaine d'integration avec le user jenkins"
-                                    currentBuild.result = 'ABORTED'
-                                    error('Aucun besoin de builder de façon cyclique  les commits de Jenkins')
-                                    return
-                                } else {
-                                    echo "ID Commit : ${entry.commitId} \nAuteur : ${entry.author} \nDate : ${new Date(entry.timestamp)} \nMessage: ${entry.msg}"
-                                    def files = new ArrayList(entry.affectedFiles)
-                                    for (int k = 0; k < files.size(); k++) {
-                                        def file = files[k]
-                                        echo "  ${file.editType.name} ${file.path}"
-                                    }
-
-                                }
-                            }
-                        }
-                      }
-                  }
-
-        }
-
-
-
         stage("Clone code from VCS") {
             steps {
                 script {
@@ -228,28 +197,28 @@ pipeline {
                     bat "mvn clean"
                 }
 
-      }
-      post {
-            changed {
-                 emailext (
-                       subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-                       body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-                       <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
-                       recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-                   )
-                 }
-                    failure {
-                        emailext (
-                            subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-                            body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-                            <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
-                            recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-                      )
-                    }
-      }
+            }
+          post {
+                changed {
+                     emailext (
+                           subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                           body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                           <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+                           recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                       )
+                     }
+                failure {
+                    emailext (
+                                subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                                body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                                <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+                                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                          )
+                   }
+          }
 
+      }
     }
 }
-
 
 
