@@ -1,5 +1,18 @@
 EmailReceivers = 'smbaye@ept.sn'
 
+
+def pingServerAfterDeployment( url){
+  def response = httpRequest url
+
+  if (response.status < 200 || response.status > 399){
+     error("Le déploiement ne s'est pas bien passé : code de retour sur URL ${url} : ${response.status}")
+     return
+  }else{
+      echo "Test de déploiement en environnement ${url} réussi, Kudos ...."
+  }
+}
+
+
 pipeline {
 
     agent any
@@ -29,7 +42,6 @@ pipeline {
         stage('Tests') {
             steps {
                 script {
-                    //echo "Skip my test"
                      bat 'mvn clean test -Dmaven.test.failure.ignore=true'
                 }
            }
@@ -77,13 +89,11 @@ pipeline {
         }
 
         stage("Quality Gate"){
-
               steps {
                     script {
                         timeout(time: 1, unit: 'HOURS') {
                             waitForQualityGate abortPipeline: true
                         }
-
                     }
               }
         }
@@ -95,6 +105,7 @@ pipeline {
                 steps {
                     script {
                         echo 'Should deploy on DEV env'
+                        bat "mvn install -Dmaven.test.failure.ignore=true"
                     }
                 }
        }
@@ -106,7 +117,8 @@ pipeline {
               steps {
                 script{
                     //sleep time: 30, unit: 'SECONDS'
-                    //def url = 'http://178.170.114.95:8090/users-management/'
+                    //def url = 'http://localhost:8085/'
+                    /*pingServerAfterDeployment (url)*/
                      echo 'Should deploy on DEV env'
                     }
                }
@@ -114,29 +126,51 @@ pipeline {
 
        stage('Deploy REC') {
             when {
-               branch 'rec'
+               branch 'feat-nexus-config'
             }
             steps {
                 script {
                     echo 'Should deploy on REC env'
+                    bat "mvn install -Dmaven.test.failure.ignore=true"
                 }
             }
        }
 
        stage('Check Deploy rec ') {
            when {
-               branch 'rec'
+               branch 'feat-nexus-config'
             }
            steps {
-             script{
+                 script{
                     echo "Should Deploy on REC env"
-                 //sleep time: 30, unit: 'SECONDS'
-                 //def url = 'http://178.170.114.95:8090/users-management/'
-             }
-          }
+                    sleep time: 30, unit: 'SECONDS'
+                    def url = 'http://localhost:8085/users-management/'
+                    deploy adapters: [tomcat9(credentialsId: 'TOMCAT-ID', path: '', url: 'http://localhost:8085/')], contextPath: 'users-management', war: '**/*.war'
+                    pingServerAfterDeployment (url)
+                 }
+           }
+           post {
+                failure {
+                     emailext (
+                        subject: "ERRORS DEPLOYMENT REC: REC '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                        body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                        <p>Your artifcat is not deployed on tomcat server</p>
+                        <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+                        recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                    )
+                }
+
+                success {
+                    emailext (
+                        subject: "DEPLOYMENT OF REC IN TOMCAT '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                        body: """<p>REC BRANCH: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                        <p>Your artificat in rec is deployed successfully</p>
+                        <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+                        recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                    )
+                }
+           }
        }
-
-
 
 
 
