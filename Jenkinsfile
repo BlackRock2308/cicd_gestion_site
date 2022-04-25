@@ -141,9 +141,9 @@ pipeline {
            steps {
                  script{
                     echo "Should Deploy on REC env"
-                   //sleep time: 30, unit: 'SECONDS'
-                   //def url = 'http://localhost:8085/'
-                   /*pingServerAfterDeployment (url)*/
+                    sleep time: 30, unit: 'SECONDS'
+                    def url = 'http://localhost:8085/users-management/'
+                    pingServerAfterDeployment (url)
                  }
            }
        }
@@ -161,7 +161,7 @@ pipeline {
 
        stage("Release on Nexus") {
            when {
-              branch 'feat-nexus-config'
+              branch 'release'
            }
            steps {
               script {
