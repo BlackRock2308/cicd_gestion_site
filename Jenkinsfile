@@ -1,190 +1,99 @@
-EmailReceivers = 'smbaye@ept.sn'
-
 pipeline {
-
     agent any
-
-    tools {
+    
+     tools {
         maven "Maven"
     }
-    environment {
-        NEXUS_VERSION = "nexus3"
-        NEXUS_PROTOCOL = "http"
-        NEXUS_URL = "192.168.56.1:8081"
-        NEXUS_REPOSITORY = "gestion-site-snapshot"
-        NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
-        SONAR_CREDENTIAL_ID = ""
-    }
-
     stages {
-
-        stage("Clone code from VCS") {
-            steps {
-                script {
-                    git 'https://github.com/BlackRock2308/cicd_gestion_site.git';
-                }
-            }
-        }
-
-        stage('Tests') {
-            steps {
-                script {
-                    echo "Skip my test"
-                     //bat 'mvn clean test'
-                }
-           }
-
-            post {
-               success {
-                echo "skip post test"
-                   //junit 'tracking/target/surefire-reports/**/*.xml'
-               }
-            }
-        }
-
-
-    stage("SonarQube Analysis") {
-        steps {
-            script {
-                def scannerHome = tool 'My SonarQube Server';
-                 withSonarQubeEnv('My SonarQube Server') {
-                 bat "${scannerHome}/bin/sonar-scanner \
-                 -D sonar.login=admin \
-                 -D sonar.password=Lifeisagift30 \
-                 -D sonar.projectKey=gestion-site-cicd-sonar \
-                 -D sonar.exclusions=vendor/**,resources/**,**/*.java \
-                 -D sonar.host.url=http://192.168.56.1:9000/"
-                }
-            }
-        }
-
-      }
-
-
-
-      stage("Quality Gate"){
-
-      steps {
-            script {
-
-                deleteDir()
-                          unstash 'sonar-report-task'
-                          def props = utils.getProperties("target/sonar/report-task.txt")
-                          echo "properties=${props}"
-                          def sonarServerUrl=props.getProperty('serverUrl')
-                          def ceTaskUrl= props.getProperty('ceTaskUrl')
-                          def ceTask
-                          def URL url = new URL(ceTaskUrl)
-                            timeout(time: 1, unit: 'MINUTES') {
-                              waitUntil {
-                                ceTask = utils.jsonParse(url)
-                                echo ceTask.toString()
-                                return "SUCCESS".equals(ceTask["task"]["status"])
-                              }
-                            }
-                            url = new URL(sonarServerUrl + "/api/qualitygates/project_status?analysisId=" + ceTask["task"]["analysisId"] )
-                            def qualitygate =  utils.jsonParse(url)
-                            echo qualitygate.toString()
-                            if ("ERROR".equals(qualitygate["projectStatus"]["status"])) {
-                              error  "Quality Gate failure"
-                            }
-            }
-      }
-
-  }
-
-
-
-
-
-
-
-
-
-       stage("Maven Build") {
-           steps {
+         stage("Clone code from VCS") {
+          steps {
                script {
-                   bat "mvn install -DskipTests=true"
-               }
-           }
-       }
-
-
-
-
-
-        stage("Publish to Nexus Repository Manager") {
-            when {
-                branch 'feat-nexus-config'
+                  git 'https://github.com/BlackRock2308/cicd_gestion_site.git';
+                }
             }
+        }
+        
+        stage('Checkout') {
+            steps {
+                echo 'Checkout'
+            }
+        }
+        stage('Build') {
             steps {
                 script {
-                    pom = readMavenPom file: "pom.xml";
-                    filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
-                    echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
-                    artifactPath = filesByGlob[0].path;
-                    artifactExists = fileExists artifactPath;
-                    if(artifactExists) {
-                        echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
-                        nexusArtifactUploader(
-                            nexusVersion: NEXUS_VERSION,
-                            protocol: NEXUS_PROTOCOL,
-                            nexusUrl: NEXUS_URL,
-                            groupId: pom.groupId,
-                            version: pom.version,
-                            repository: NEXUS_REPOSITORY,
-                            credentialsId: NEXUS_CREDENTIAL_ID,
-                            artifacts: [
-                                [artifactId: pom.artifactId,
-                                classifier: '',
-                                file: artifactPath,
-                                type: pom.packaging],
-                                [artifactId: pom.artifactId,
-                                classifier: '',
-                                file: "pom.xml",
-                                type: "pom"]
-                            ]
-                        );
-                    } else {
-                        error "*** File: ${artifactPath}, could not be found";
+                    echo 'Clean Build'
+                    bat 'mvn clean compile'
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                script {
+                    echo 'Testing'
+                    bat 'mvn test'
+                }
+            }
+        }
+        stage('JaCoCo') {
+            steps {
+                script {
+                    echo 'Code Coverage'
+                    jacoco()
+                }
+            }
+        }
+        stage('Sonar') {
+            steps {
+                script {
+                         echo 'Sonar Scanner'
+                         def scannerHome = tool 'My SonarQube Server';
+                         withSonarQubeEnv('My SonarQube Server') {
+                         bat "${scannerHome}/bin/sonar-scanner \
+                         -D sonar.login=admin \
+                         -D sonar.password=Lifeisagift30 \
+                         -D sonar.projectKey=gestion-site-cicd-sonar \
+                         -D sonar.language=java \
+
+                         -D sonar.exclusions=vendor/**,resources/**,**/*.java \
+                         -D sonar.sources=cicd_gestion_site/scr/main \
+                         -D sonar.tests=cicd_gestion_site/scr/test \
+                         -D sonar.host.url=http://192.168.56.1:9000/"
                     }
                 }
             }
         }
-
-        stage("Email Notification") {
-             steps {
-                  echo "Send Mail"
-             }
-             post {
-                   success {
-                          echo "This block runs when the stage succeeded."
-                   }
-
-                   always {
-                      // send to email
-                      emailext (
-                          subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-                          body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-                            <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
-                          recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-                        )
-
-                   }
-             }
+        stage('Package') {
+            steps {
+                script {
+                    echo 'Packaging'
+                    bat 'mvn package -DskipTests'
+                }
+            }
         }
-
-
-
-
+        stage('Deploy') {
+            steps {
+                script {
+                    echo '## TODO DEPLOYMENT ##'
+                }
+            }
+        }
     }
-
-
-
-
-
-
-
-
+    
+    post {
+        always {
+            echo 'JENKINS PIPELINE'
+        }
+        success {
+            echo 'JENKINS PIPELINE SUCCESSFUL'
+        }
+        failure {
+            echo 'JENKINS PIPELINE FAILED'
+        }
+        unstable {
+            echo 'JENKINS PIPELINE WAS MARKED AS UNSTABLE'
+        }
+        changed {
+            echo 'JENKINS PIPELINE STATUS HAS CHANGED SINCE LAST EXECUTION'
+        }
+    }
 }
-
