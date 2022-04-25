@@ -161,7 +161,7 @@ pipeline {
 
        stage("Release on Nexus") {
            when {
-              branch 'feat_nexus-config'
+              branch 'feat-nexus-config'
            }
            steps {
               script {
