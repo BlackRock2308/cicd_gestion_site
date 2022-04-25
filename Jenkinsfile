@@ -38,8 +38,7 @@ pipeline {
             steps {
                 script {
                     echo 'Code Coverage'
-                    bat mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
-
+                    jacoco()
                 }
             }
         }
