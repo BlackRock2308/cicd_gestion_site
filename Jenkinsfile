@@ -46,15 +46,15 @@ pipeline {
             steps {
                 script {
                          echo 'Sonar Scanner'
-                         def scannerHome = tool 'My SonarQube Server';
+                        def scannerHome = tool 'My SonarQube Server';
                          withSonarQubeEnv('My SonarQube Server') {
                          bat "${scannerHome}/bin/sonar-scanner \
                          -D sonar.login=admin \
                          -D sonar.password=Lifeisagift30 \
                          -D sonar.projectKey=gestion-site-cicd-sonar \
-                         -D sonar.exclusions=vendor/**,resources/**,**/*.java \ 
-                         -D sonar.host.url=http://192.168.56.1:9000/" 
-                    }
+                         -D sonar.exclusions=vendor/**,resources/**,**/*.java \
+                         -D sonar.host.url=http://192.168.56.1:9000/"
+                        }
                 }
             }
         }
