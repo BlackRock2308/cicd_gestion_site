@@ -161,30 +161,41 @@ pipeline {
                    artifactPath = filesByGlob[0].path;
                    artifactExists = fileExists artifactPath;
                    if(artifactExists) {
-                   echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
-                   nexusArtifactUploader(
-                   nexusVersion: NEXUS_VERSION,
-                   protocol: NEXUS_PROTOCOL,
-                   nexusUrl: NEXUS_URL,
-                   groupId: pom.groupId,
-                   version: pom.version,
-                   repository: NEXUS_REPOSITORY,
-                   credentialsId: NEXUS_CREDENTIAL_ID,
-                   artifacts: [
-                     [artifactId: pom.artifactId,
-                      classifier: '',
-                      file: artifactPath,
-                      type: pom.packaging],
-                      [artifactId: pom.artifactId,
-                      classifier: '',
-                      file: "pom.xml",
-                      type: "pom"]
-                      ]
-                   );
+                       echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
+                       nexusArtifactUploader(
+                       nexusVersion: NEXUS_VERSION,
+                       protocol: NEXUS_PROTOCOL,
+                       nexusUrl: NEXUS_URL,
+                       groupId: pom.groupId,
+                       version: pom.version,
+                       repository: NEXUS_REPOSITORY,
+                       credentialsId: NEXUS_CREDENTIAL_ID,
+                       artifacts: [
+                         [artifactId: pom.artifactId,
+                          classifier: '',
+                          file: artifactPath,
+                          type: pom.packaging],
+                          [artifactId: pom.artifactId,
+                          classifier: '',
+                          file: "pom.xml",
+                          type: "pom"]
+                          ]
+                       );
                    } else {
-                         error "*** File: ${artifactPath}, could not be found";
+                             error "*** File: ${artifactPath}, could not be found";
                    }
               }
+          }
+          post {
+                success {
+                    emailext (
+                        subject: "NOTIFICATION AFTER PUBLISHING IN NEXUS: RELEASE '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                        body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                        <p>Your snapshot is published on Nexus successfully</p>
+                        <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+                        recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                    )
+                }
           }
       }
 
@@ -196,9 +207,16 @@ pipeline {
                     echo "Send Mail"
                     bat "mvn clean"
                 }
-
             }
           post {
+                  success {
+                      emailext (
+                            subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                            body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                            <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+                            recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                            )
+                  }
                 changed {
                      emailext (
                            subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
