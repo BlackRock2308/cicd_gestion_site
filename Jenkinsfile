@@ -143,8 +143,38 @@ pipeline {
                     echo "Should Deploy on REC env"
                     sleep time: 30, unit: 'SECONDS'
                     def url = 'http://localhost:8085/users-management/'
+                    bat mvn deploy adapters: [
+                                  tomcat9(
+                                    credentialsId: 'TOMCAT-ID',
+                                    path: '',
+                                    url: 'http://localhost:8085/')
+                                    ]
+                                    , contextPath: 'users-management',
+                                    war: '**/*.war'
                     pingServerAfterDeployment (url)
                  }
+           }
+           post {
+                failure {
+                     emailext (
+                        subject: "ERRORS DEPLOYMENT REC: REC '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                        body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                        <p>Your artifcat is not deployed on tomcat server</p>
+                        <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+                        recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                    )
+                }
+
+                success {
+                    emailext (
+                        subject: "DEPLOYMENT OF REC IN TOMCAT '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                        body: """<p>REC BRANCH: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                        <p>Your artificat in rec is deployed successfully</p>
+                        <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+                        recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                    )
+                }
+
            }
        }
 
