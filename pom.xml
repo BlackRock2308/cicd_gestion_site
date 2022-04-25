@@ -46,6 +46,7 @@
 		<sonar.jacoco.itReportPaths>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPaths>
 		<sonar.language>java</sonar.language>
 		<sonar.scm.proider>git</sonar.scm.proider>
+		<sonar.coverage.jacoco.xmlReportPaths>../app-it/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
 
@@ -304,11 +305,22 @@
 
 	<profiles>
 		<profile>
+			<id>sonar</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<!-- Optional URL to server. Default value is http://localhost:9000 -->
+				<sonar.host.url>
+					http://localhost:9000
+				</sonar.host.url>
+			</properties>
+		</profile>
+		<profile>
 			<id>coverage</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-
 			<build>
 				<plugins>
 					<plugin>
