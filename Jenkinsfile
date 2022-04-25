@@ -45,7 +45,7 @@ pipeline {
                       }
                   }
                 }
-           }
+        }
 
 
 
@@ -95,9 +95,9 @@ pipeline {
                 }
             }
 
-          }
+        }
 
-          stage("Quality Gate"){
+        stage("Quality Gate"){
 
               steps {
                     script {
@@ -107,9 +107,9 @@ pipeline {
 
                     }
               }
-          }
+        }
 
-           stage('Deploy DEV') {
+       stage('Deploy DEV') {
                 when {
                    branch 'master'
                 }
@@ -118,9 +118,9 @@ pipeline {
                         echo 'Should deploy on DEV env'
                     }
                 }
-            }
+       }
 
-            stage('Check Deploy DEV ') {
+       stage('Check Deploy DEV ') {
               when {
                   branch 'master'
               }
@@ -131,9 +131,9 @@ pipeline {
                      echo 'Should deploy on DEV env'
                     }
                }
-            }
+       }
 
-        stage('Deploy REC') {
+       stage('Deploy REC') {
             when {
                branch 'rec'
             }
@@ -142,9 +142,9 @@ pipeline {
                     echo 'Should deploy on REC env'
                 }
             }
-        }
+       }
 
-        stage('Check Deploy rec ') {
+       stage('Check Deploy rec ') {
            when {
                branch 'rec'
             }
@@ -155,13 +155,13 @@ pipeline {
                  //def url = 'http://178.170.114.95:8090/users-management/'
              }
           }
-        }
+       }
 
 
 
 
 
-        stage("Maven Build") {
+       stage("Maven Build") {
             steps {
                 script {
                     bat "mvn install -DskipTests=true"
@@ -208,27 +208,27 @@ pipeline {
                    }
               }
           }
-       }
+      }
 
 
 
-        stage("Email Notification") {
+      stage("Email Notification") {
             steps {
                 script {
                     echo "Send Mail"
                     bat "mvn clean"
                 }
 
-            }
-                post {
-                    changed {
-                        emailext (
-                            subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-                            body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-                            <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
-                            recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-                        )
-                    }
+      }
+      post {
+            changed {
+                 emailext (
+                       subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                       body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                       <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+                       recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                   )
+                 }
                     failure {
                         emailext (
                             subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
@@ -236,15 +236,11 @@ pipeline {
                             <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
                             recipientProviders: [[$class: 'DevelopersRecipientProvider']]
                       )
-                   }
-                }
-           }
-        }
-
+                    }
+      }
 
     }
-
-
-
 }
+
+
 
