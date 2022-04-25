@@ -24,7 +24,7 @@ pipeline {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "192.168.56.1:8081"
-        NEXUS_REPOSITORY = "gestion-site-release"
+        NEXUS_REPOSITORY = "gestion-site-snapshot"
         NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
         SONAR_CREDENTIAL_ID = ""
     }
@@ -144,7 +144,7 @@ pipeline {
                  script{
                     echo "Should Deploy on REC env"
                     sleep time: 30, unit: 'SECONDS'
-                    def url = 'http://localhost:8085/users-management/'
+                    def url = 'http://localhost:8085/'
                     deploy adapters: [tomcat9(credentialsId: 'TOMCAT-ID', path: '', url: 'http://localhost:8085/')], contextPath: 'users-management', war: '**/*.war'
                     pingServerAfterDeployment (url)
                  }
