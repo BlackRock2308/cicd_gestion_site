@@ -59,7 +59,7 @@ pipeline {
                  -D sonar.password=Lifeisagift30 \
                  -D sonar.projectKey=gestion-site-cicd-sonar \
                  -D sonar.language=java \
-                 -D sonar.projectBaseDir=
+
                  -D sonar.exclusions=vendor/**,resources/**,**/*.java \
                  -D sonar.sources=cicd_gestion_site/scr/main \
                  -D sonar.tests=cicd_gestion_site/scr/test \
