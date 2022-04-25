@@ -4,11 +4,11 @@
 
 	<distributionManagement>
 		<repository>
-			<id>gestion-site-release</id>
+			<id>gestion-site</id>
 			<url>http://localhost:8081/repository/gestion-site-release/</url>
 		</repository>
 		<snapshotRepository>
-			<id>gestion-site-snapshot</id>
+			<id>gestion-site</id>
 			<url>http://localhost:8081/repository/gestion-site-snapshot/</url>
 		</snapshotRepository>
 	</distributionManagement>
