@@ -136,7 +136,7 @@ pipeline {
 
        stage('Check Deploy rec ') {
            when {
-               branch 'rec'
+               branch 'feat-nexus-config'
             }
            steps {
                  script{
@@ -149,7 +149,7 @@ pipeline {
                                     path: '',
                                     url: 'http://localhost:8085/')
                                     ]
-                                    , contextPath: 'users-management',
+                                    contextPath: 'users-management',
                                     war: '**/*.war'
                     pingServerAfterDeployment (url)
                  }
@@ -174,7 +174,6 @@ pipeline {
                         recipientProviders: [[$class: 'DevelopersRecipientProvider']]
                     )
                 }
-
            }
        }
 
