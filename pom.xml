@@ -4,14 +4,25 @@
 
 	<distributionManagement>
 		<repository>
-			<id>gestion-site-release</id>
+			<id>nexus-releases</id>
 			<url>http://localhost:8081/repository/gestion-site-release/</url>
 		</repository>
 		<snapshotRepository>
-			<id>gestion-site-snapshot</id>
+			<id>nexus-snapshots</id>
 			<url>http://localhost:8081/repository/gestion-site-snapshot/</url>
 		</snapshotRepository>
 	</distributionManagement>
+
+
+	<!-- DOwnload the dependancies from gestion-site-maven-group
+	<repositories>
+		<repository>
+			<id>gestion-site-central</id>
+			<url>http://localhost:8081/repository/gestion-site-maven-group/</url>
+		</repository>
+	</repositories>
+
+	-->
 
 
 
