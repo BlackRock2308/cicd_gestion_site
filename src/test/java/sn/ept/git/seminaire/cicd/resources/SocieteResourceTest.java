@@ -1,6 +1,7 @@
 package sn.ept.git.seminaire.cicd.resources;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import sn.ept.git.seminaire.cicd.data.SocieteVMTestData;
 import sn.ept.git.seminaire.cicd.data.TestData;
 import sn.ept.git.seminaire.cicd.dto.SocieteDTO;
@@ -28,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @Slf4j
+@SpringBootTest
 class SocieteResourceTest extends BasicResourceTest {
 
     static private SocieteVM vm;

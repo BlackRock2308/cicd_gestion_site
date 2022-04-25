@@ -11,8 +11,8 @@ import sn.ept.git.seminaire.cicd.CicdApplicationTests;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = {CicdApplicationTests.class})
-@Transactional
-@TestExecutionListeners({})
+
+
 class ServiceBaseTest {
 
     public static final int DEFAULT_SIZE = 10;

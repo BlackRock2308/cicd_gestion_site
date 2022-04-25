@@ -12,8 +12,7 @@ import sn.ept.git.seminaire.cicd.CicdApplicationTests;
 
 @SpringBootTest(classes = {CicdApplicationTests.class})
 @AutoConfigureMockMvc
-@Transactional
-@TestExecutionListeners({})
+
 class BasicResourceTest {
 
     @Autowired

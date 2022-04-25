@@ -2,14 +2,22 @@ package sn.ept.git.seminaire.cicd.mapper;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import sn.ept.git.seminaire.cicd.data.SocieteDTOTestData;
 import sn.ept.git.seminaire.cicd.dto.SocieteDTO;
 import sn.ept.git.seminaire.cicd.mappers.SocieteMapper;
 import sn.ept.git.seminaire.cicd.models.Societe;
 
+import javax.transaction.Transactional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest
+@RunWith(SpringRunner.class)
+@Transactional
 class SocieteVMMapperTest extends  MapperBaseTest{
 
     SocieteDTO dto;

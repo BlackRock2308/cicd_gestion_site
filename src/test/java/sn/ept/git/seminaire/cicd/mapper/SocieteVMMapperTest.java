@@ -1,8 +1,17 @@
 package sn.ept.git.seminaire.cicd.mapper;
 
+import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.event.annotation.BeforeTestClass;
+import org.springframework.test.context.event.annotation.BeforeTestExecution;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import sn.ept.git.seminaire.cicd.data.SocieteVMTestData;
 import sn.ept.git.seminaire.cicd.dto.vm.SocieteVM;
 import sn.ept.git.seminaire.cicd.mappers.vm.SocieteVMMapper;
@@ -10,13 +19,18 @@ import sn.ept.git.seminaire.cicd.models.Societe;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SocieteDTOMapperTest extends  MapperBaseTest{
+@ContextConfiguration
+@SpringBootTest
+@RunWith(SpringRunner.class)
 
-    SocieteVM vm;
-    Societe entity;
+class SocieteDTOMapperTest extends  MapperBaseTest{
 
     @Autowired
     private SocieteVMMapper mapper;
+    SocieteVM vm;
+    Societe entity;
+
+
 
 
     @BeforeEach

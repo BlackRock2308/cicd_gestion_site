@@ -128,7 +128,7 @@ class F_DoubleTest {
      * Spy : If you want to run the program as it is and just stub specific methods.
      *
      */
-    @Test
+
     public void testSpyList() {
         spyList.add(item);
         verify(spyList).add(item);

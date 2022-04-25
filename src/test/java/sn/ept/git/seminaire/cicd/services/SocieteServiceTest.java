@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import sn.ept.git.seminaire.cicd.data.SocieteVMTestData;
 import sn.ept.git.seminaire.cicd.data.TestData;
 import sn.ept.git.seminaire.cicd.dto.SocieteDTO;
@@ -28,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
         @Sql("classpath:2_societe_data_test.sql"),
 })*/
 @Slf4j
+@SpringBootTest
 class SocieteServiceTest extends ServiceBaseTest {
 
     @Autowired
@@ -38,6 +40,7 @@ class SocieteServiceTest extends ServiceBaseTest {
     SocieteRepository societeRepository;
     @Autowired
     ISocieteService service;
+
     Optional<Societe> societe;
     static  SocieteVM vm ;
     SocieteDTO dto;
