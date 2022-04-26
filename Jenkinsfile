@@ -1,5 +1,9 @@
 EmailReceivers = 'smbaye@ept.sn'
 
+def tomcatWeb = 'C:\\apache-tomcat-9.0.62\\webapps'
+def tomcatBin = 'C:\\apache-tomcat-9.0.62\\bin'
+def tomcatStatus = ''
+
 
 def pingServerAfterDeployment( url){
   def response = httpRequest url
@@ -24,7 +28,7 @@ pipeline {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "192.168.56.1:8081"
-        NEXUS_REPOSITORY = "gestion-site-release"
+        NEXUS_REPOSITORY = "maven-nexus-repo"
         NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
         SONAR_CREDENTIAL_ID = ""
     }
@@ -42,13 +46,12 @@ pipeline {
         stage('Tests') {
             steps {
                 script {
-                     bat 'mvn clean test -Dmaven.test.failure.ignore=true'
+                     bat '-Dmaven.test.failure.ignore=true mvn clean test '
                 }
            }
 
             post {
                failure {
-                // send to email
                  emailext (
                       subject: "POST TEST: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
                        body: """<p>TEST STATUS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
@@ -104,51 +107,82 @@ pipeline {
                 }
                 steps {
                     script {
+
                         echo 'Should deploy on DEV env'
-                        bat "mvn install -Dmaven.test.failure.ignore=true"
+                        bat "mvn clean package -DskipTests=true"
                     }
                 }
        }
 
-       stage('Check Deploy DEV ') {
+       stage('Deploy master war file in tomcat Server') {
+                when {
+                   branch 'master'
+                }
+                steps {
+                    script {
+                        echo 'Should install on DEV env'
+                        bat "copy target\\tracking.war \"${tomcatWeb}\\tracking.war\""
+                    }
+                }
+       }
+
+       stage('Check Deploy DEV ,starting tomcat server') {
               when {
                   branch 'master'
               }
               steps {
-                script{
-                    //sleep time: 30, unit: 'SECONDS'
-                    //def url = 'http://localhost:8085/'
-                    /*pingServerAfterDeployment (url)*/
-                     echo 'Should deploy on DEV env'
+                    script{
+                         sleep(time:5, unit: "SECONDS")
+                         bat "${tomcatBin}\\startup.bat"
+                         sleep(time:100, unit: "SECONDS")
+                         def url = 'http://localhost:8085/'
+                         pingServerAfterDeployment (url)
+                         echo 'Should deploy on DEV env'
                     }
-               }
+              }
        }
 
        stage('Deploy REC') {
             when {
-               branch 'feat-nexus-config'
+               branch 'rec'
             }
             steps {
                 script {
                     echo 'Should deploy on REC env'
-                    bat "mvn install -Dmaven.test.failure.ignore=true"
+                    bat "mvn clean package -DskipTests=true"
                 }
             }
        }
 
-       stage('Check Deploy rec ') {
+       stage('Deploy REC war file on Tomcat Server') {
+            when {
+               branch 'rec'
+            }
+            steps {
+                script {
+                    echo 'Should deploy on REC env'
+                    bat "copy target\\tracking.war \"${tomcatWeb}\\tracking.war\""
+                }
+            }
+       }
+
+       stage('Check Deploy rec , start tomcat server') {
            when {
-               branch 'feat-nexus-config'
+               branch 'rec'
             }
            steps {
                  script{
-                    echo "Should Deploy on REC env"
-                    sleep time: 30, unit: 'SECONDS'
-                    def url = 'http://localhost:8085/users-management/'
-                    deploy adapters: [tomcat9(credentialsId: 'TOMCAT-ID', path: '', url: 'http://localhost:8085/')], contextPath: 'users-management', war: '**/*.war'
-                    //pingServerAfterDeployment (url)
+                     sleep(time:5, unit: "SECONDS")
+                     bat "${tomcatBin}\\startup.bat"
+                     sleep(time:100, unit: "SECONDS")
+                     //sleep time: 30, unit: 'SECONDS'
+                     def url = 'http://localhost:8085/'
+                     pingServerAfterDeployment (url)
+                     echo 'Should deploy on DEV env'
                  }
            }
+
+
            post {
                 failure {
                      emailext (
@@ -170,14 +204,17 @@ pipeline {
                     )
                 }
            }
+
        }
 
 
-
        stage("Maven Build") {
+            when {
+                branch 'release'
+            }
             steps {
                 script {
-                    bat "mvn install -DskipTests=true"
+                    bat "mvn clean package -Dmaven.test.failure.ignore=true"
                 }
             }
        }
@@ -239,18 +276,10 @@ pipeline {
             steps {
                 script {
                     echo "Send Mail"
-                    //bat "mvn clean"
+                    bat "mvn clean"
                 }
             }
           post {
-                  success {
-                      emailext (
-                            subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-                            body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-                            <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
-                            recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-                            )
-                  }
                 changed {
                      emailext (
                            subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
@@ -272,5 +301,4 @@ pipeline {
       }
     }
 }
-
 

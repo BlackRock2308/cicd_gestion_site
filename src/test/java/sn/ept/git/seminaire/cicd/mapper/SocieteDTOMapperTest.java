@@ -21,10 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 
-@ExtendWith(SpringExtension.class) // JUnit 5
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {
         SocieteVMMapperImpl.class,
-        SocieteMapperImpl.class
+        SocieteMapperImpl.class,
 })
 class SocieteVMMapperTest extends  MapperBaseTest{
 
@@ -40,11 +40,13 @@ class SocieteVMMapperTest extends  MapperBaseTest{
     @BeforeEach
     void setUp() {
         dto = SocieteDTOTestData.defaultDTO();
+        entity = SocieteDTOTestData.defaultSociete(entity);
     }
 
 
     @Test
     void toEntity() {
+        dto =mapper.asDTO(entity);
         entity = mapper.asEntity(dto);
         assertThat(entity).isNotNull();
         assertThat(entity.getId()).isEqualTo(dto.getId());
@@ -59,6 +61,7 @@ class SocieteVMMapperTest extends  MapperBaseTest{
         assertThat(entity.getLongitude()).isEqualTo(dto.getLongitude());
         assertThat(entity.getLatitude()).isEqualTo(dto.getLatitude());
         assertThat(entity.getPhone()).isEqualTo(dto.getPhone());
+
     }
 
     @Test
