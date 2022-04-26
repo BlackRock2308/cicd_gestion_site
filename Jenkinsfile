@@ -109,7 +109,7 @@ pipeline {
                     script {
 
                         echo 'Should deploy on DEV env'
-                        bat "mvn clean package -DskipTests=true"
+                        bat "mvn clean install -DskipTests=true"
                     }
                 }
        }
@@ -133,9 +133,9 @@ pipeline {
               steps {
                     script{
                          sleep(time:5, unit: "SECONDS")
-                         bat "${tomcatBin}\\startup.bat"
+                         //bat "${tomcatBin}\\startup.bat"
                          sleep(time:100, unit: "SECONDS")
-                         def url = 'http://localhost:8085/'
+                         def url = 'http://localhost:8085/tracking/'
                          pingServerAfterDeployment (url)
                          echo 'Should deploy on DEV env'
                     }
@@ -149,7 +149,7 @@ pipeline {
             steps {
                 script {
                     echo 'Should deploy on REC env'
-                    bat "mvn clean package -DskipTests=true"
+                    bat "mvn clean install -DskipTests=true"
                 }
             }
        }
@@ -214,7 +214,7 @@ pipeline {
             }
             steps {
                 script {
-                    bat "mvn clean package -Dmaven.test.failure.ignore=true"
+                    bat "mvn clean install -Dmaven.test.failure.ignore=true"
                 }
             }
        }
