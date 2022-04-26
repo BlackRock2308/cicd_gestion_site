@@ -28,7 +28,7 @@ pipeline {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "192.168.56.1:8081"
-        NEXUS_REPOSITORY = "gestion-site-snapshot"
+        NEXUS_REPOSITORY = "maven-nexus-repo"
         NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
         SONAR_CREDENTIAL_ID = ""
     }
@@ -46,7 +46,7 @@ pipeline {
         stage('Tests') {
             steps {
                 script {
-                     bat 'mvn clean test -Dmaven.test.failure.ignore=true'
+                     bat '-Dmaven.test.failure.ignore=true mvn clean test '
                 }
            }
 
@@ -109,7 +109,7 @@ pipeline {
                     script {
 
                         echo 'Should deploy on DEV env'
-                        bat "mvn clean install -DskipTests=true"
+                        bat "mvn clean package -DskipTests=true"
                     }
                 }
        }
@@ -149,7 +149,7 @@ pipeline {
             steps {
                 script {
                     echo 'Should deploy on REC env'
-                    bat "mvn clean install -DskipTests=true"
+                    bat "mvn clean package -DskipTests=true"
                 }
             }
        }
@@ -162,7 +162,6 @@ pipeline {
                 script {
                     echo 'Should deploy on REC env'
                     bat "copy target\\tracking.war \"${tomcatWeb}\\tracking.war\""
-
                 }
             }
        }
@@ -215,7 +214,7 @@ pipeline {
             }
             steps {
                 script {
-                    bat "mvn clean install -DskipTests=true"
+                    bat "mvn clean package -Dmaven.test.failure.ignore=true"
                 }
             }
        }

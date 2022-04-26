@@ -257,6 +257,7 @@
 				<version>3.9.1.2184</version>
 			</plugin>
 
+
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -347,6 +348,25 @@
 								<goals>
 									<goal>report</goal>
 								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>properties-maven-plugin</artifactId>
+						<version>${properties-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<phase>initialize</phase>
+								<goals>
+									<goal>read-project-properties</goal>
+								</goals>
+								<configuration>
+									<files>
+										<file>sonar-project.properties</file>
+									</files>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
