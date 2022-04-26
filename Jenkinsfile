@@ -107,8 +107,11 @@ pipeline {
                 }
                 steps {
                     script {
+
                         echo 'Should deploy on DEV env'
                         bat "copy target\\tracking.war \"${tomcatWeb}\\tracking.war\""
+
+                
                     }
                 }
        }
@@ -137,6 +140,7 @@ pipeline {
                 script {
                     echo 'Should deploy on REC env'
                     bat "copy target\\tracking.war \"${tomcatWeb}\\tracking.war\""
+
                 }
             }
        }
