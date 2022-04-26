@@ -4,6 +4,7 @@ def tomcatWeb = 'C:\\apache-tomcat-9.0.62\\webapps'
 def tomcatBin = 'C:\\apache-tomcat-9.0.62\\bin'
 def tomcatStatus = ''
 
+
 def pingServerAfterDeployment( url){
   def response = httpRequest url
 
@@ -27,7 +28,7 @@ pipeline {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "192.168.56.1:8081"
-        NEXUS_REPOSITORY = "gestion-site-central"
+        NEXUS_REPOSITORY = "gestion-site-snapshot"
         NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
         SONAR_CREDENTIAL_ID = ""
     }
@@ -51,7 +52,6 @@ pipeline {
 
             post {
                failure {
-                // send to email
                  emailext (
                       subject: "POST TEST: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
                        body: """<p>TEST STATUS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
@@ -103,61 +103,62 @@ pipeline {
 
        stage('Deploy DEV') {
                 when {
-                   branch 'groot'
+                   branch 'master'
                 }
                 steps {
                     script {
                         echo 'Should deploy on DEV env'
-                        bat "mvn install -DskipTests=true"
+                        bat "copy target\\tracking.war \"${tomcatWeb}\\tracking.war\""
                     }
                 }
        }
 
-       stage('Check Deploy DEV ') {
+       stage('Check Deploy DEV ,starting tomcat server') {
               when {
-                  branch 'groot'
+                  branch 'master'
               }
               steps {
-                script{
-                    copyArtifacts('cicd_gestion_site') {
-                        includePatterns('*.xml', '*.properties')
-                        excludePatterns('test.xml', 'test.properties')
-                        targetDirectory('files')
-                        flatten()
-                        optional()
-                        buildSelector {
-                            latestSuccessful(true)
-                        }
-                }
-                   }
-             }
+                    script{
+                         sleep(time:5, unit: "SECONDS")
+                         bat "${tomcatBin}\\startup.bat"
+                         sleep(time:100, unit: "SECONDS")
+                         def url = 'http://localhost:8085/'
+                         pingServerAfterDeployment (url)
+                         echo 'Should deploy on DEV env'
+                    }
+              }
        }
 
        stage('Deploy REC') {
             when {
-               branch 'feat-nexus-config'
+               branch 'rec'
             }
             steps {
                 script {
                     echo 'Should deploy on REC env'
-                    bat "mvn install -Dmaven.test.failure.ignore=true"
+                    bat "copy target\\tracking.war \"${tomcatWeb}\\tracking.war\""
                 }
             }
        }
 
-       stage('Check Deploy rec ') {
+       stage('Check Deploy rec , start tomcat server') {
            when {
-               branch 'feat-nexus-config'
+               branch 'rec'
             }
            steps {
                  script{
-                    echo "Should Deploy on REC env"
-                    //sleep time: 30, unit: 'SECONDS'
-                    //def url = 'http://localhost:8085/users-management/'
-                    //deploy adapters: [tomcat9(credentialsId: 'TOMCAT-ID', path: '', url: 'http://localhost:8085/')], contextPath: 'users-management', war: '**/*.war'
-                    //pingServerAfterDeployment (url)
+                     sleep(time:5, unit: "SECONDS")
+                     bat "${tomcatBin}\\startup.bat"
+                     sleep(time:100, unit: "SECONDS")
+                     //sleep time: 30, unit: 'SECONDS'
+                     def url = 'http://localhost:8085/'
+                     pingServerAfterDeployment (url)
+                     echo 'Should deploy on DEV env'
+
                  }
            }
+
+
            post {
                 failure {
                      emailext (
@@ -179,8 +180,8 @@ pipeline {
                     )
                 }
            }
-       }
 
+       }
 
 
        stage("Maven Build") {
@@ -281,5 +282,4 @@ pipeline {
       }
     }
 }
-
 
