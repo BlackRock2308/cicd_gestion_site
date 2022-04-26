@@ -6,12 +6,12 @@
 		<repository>
 			<id>site-releases</id>
 			<name>gestion-site-release</name>
-			<url>http://localhost:8081/repository/gestion-site-release/</url>
+			<url>http://localhost:8081/repository/gestion-site-snapshot/</url>
 		</repository>
 		<snapshotRepository>
 			<id>site-snapshots</id>
 			<name>gestion-site-snapshot</name>
-			<url>http://localhost:8081/repository/gestion-site-snapshot/</url>
+			<url>http://localhost:8081/repository/gestion-site-release/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
