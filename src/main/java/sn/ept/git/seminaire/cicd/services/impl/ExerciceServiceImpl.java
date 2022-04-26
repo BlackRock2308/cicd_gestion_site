@@ -45,7 +45,7 @@ public class ExerciceServiceImpl implements IExerciceService {
         final Optional<Societe> societe = societeRepository.findById(vm.getIdSociete());
         ExceptionUtils.presentOrThrow(societe, ItemNotFoundException.SOCIETE_BY_ID, vm.getIdSociete().toString());
 
-        Optional<Exercice> optional = repository.findByDates(vm.getStart(), vm.getEnd());
+        Optional<Exercice> optional = repository.findByDates(vm.getStart());
         ExceptionUtils.absentOrThrow(optional, ItemExistsException.PLAGE_EXERCICE_EXIST, vm.getStart().toString(),vm.getEnd().toString());
 
         Exercice entity =  vmMapper.asEntity(vm);
@@ -91,7 +91,7 @@ public class ExerciceServiceImpl implements IExerciceService {
     @Override
     public ExerciceDTO update(UUID uuid, ExerciceVM vm) {
 
-        Optional<Exercice> optional = repository.findByDates(vm.getStart(), vm.getEnd());
+        Optional<Exercice> optional = repository.findByDates(vm.getStart());
         ExceptionUtils.absentOrThrow(optional, ItemExistsException.PLAGE_EXERCICE_EXIST, vm.getStart().toString(),vm.getEnd().toString());
 
         final Optional<Societe> societe = societeRepository.findById(vm.getIdSociete());
