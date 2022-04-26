@@ -1,5 +1,8 @@
 EmailReceivers = 'smbaye@ept.sn'
 
+def tomcatWeb = 'C:\\apache-tomcat-9.0.62\\webapps'
+def tomcatBin = 'C:\\apache-tomcat-9.0.62\\bin'
+def tomcatStatus = ''
 
 def pingServerAfterDeployment( url){
   def response = httpRequest url
@@ -100,28 +103,34 @@ pipeline {
 
        stage('Deploy DEV') {
                 when {
-                   branch 'master'
+                   branch 'groot'
                 }
                 steps {
                     script {
                         echo 'Should deploy on DEV env'
-                        bat "mvn install -Dmaven.test.failure.ignore=true"
+                        bat "mvn install -DskipTests=true"
                     }
                 }
        }
 
        stage('Check Deploy DEV ') {
               when {
-                  branch 'master'
+                  branch 'groot'
               }
               steps {
                 script{
-                    //sleep time: 30, unit: 'SECONDS'
-                    //def url = 'http://localhost:8085/'
-                    /*pingServerAfterDeployment (url)*/
-                     echo 'Should deploy on DEV env'
-                    }
-               }
+                    copyArtifacts('tracking') {
+                        includePatterns('*.xml', '*.properties')
+                        excludePatterns('test.xml', 'test.properties')
+                        targetDirectory('files')
+                        flatten()
+                        optional()
+                        buildSelector {
+                            latestSuccessful(true)
+                        }
+                }
+                   }
+             }
        }
 
        stage('Deploy REC') {
@@ -143,9 +152,9 @@ pipeline {
            steps {
                  script{
                     echo "Should Deploy on REC env"
-                    sleep time: 30, unit: 'SECONDS'
-                    def url = 'http://localhost:8085/users-management/'
-                    deploy adapters: [tomcat9(credentialsId: 'TOMCAT-ID', path: '', url: 'http://localhost:8085/')], contextPath: 'users-management', war: '**/*.war'
+                    //sleep time: 30, unit: 'SECONDS'
+                    //def url = 'http://localhost:8085/users-management/'
+                    //deploy adapters: [tomcat9(credentialsId: 'TOMCAT-ID', path: '', url: 'http://localhost:8085/')], contextPath: 'users-management', war: '**/*.war'
                     //pingServerAfterDeployment (url)
                  }
            }
@@ -239,7 +248,7 @@ pipeline {
             steps {
                 script {
                     echo "Send Mail"
-                    //bat "mvn clean"
+                    bat "mvn clean"
                 }
             }
           post {
