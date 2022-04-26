@@ -146,7 +146,7 @@ pipeline {
                     sleep time: 30, unit: 'SECONDS'
                     def url = 'http://localhost:8085/users-management/'
                     deploy adapters: [tomcat9(credentialsId: 'TOMCAT-ID', path: '', url: 'http://localhost:8085/')], contextPath: 'users-management', war: '**/*.war
-                   //pingServerAfterDeployment (url)
+                  
                  }
            }
            post {
