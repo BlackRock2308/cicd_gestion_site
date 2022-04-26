@@ -4,7 +4,7 @@
 
 	<distributionManagement>
 		<repository>
-			<id>nexus-snapshots</id>
+			<id>nexus-releases</id>
 			<url>http://localhost:8081/repository/gestion-site-release/</url>
 		</repository>
 		<snapshotRepository>
@@ -39,7 +39,7 @@
 	<groupId>sn.ept.git.seminaire</groupId>
 	<artifactId>cicd</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>tracking</name>
 	<description>Projet de tracking d'evenements</description>
 
