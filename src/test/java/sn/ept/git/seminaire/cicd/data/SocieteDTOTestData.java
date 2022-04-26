@@ -1,6 +1,7 @@
 package sn.ept.git.seminaire.cicd.data;
 
 import sn.ept.git.seminaire.cicd.dto.SocieteDTO;
+import sn.ept.git.seminaire.cicd.models.Societe;
 
 public final class SocieteDTOTestData extends TestData {
 
@@ -20,6 +21,25 @@ public final class SocieteDTOTestData extends TestData {
                 .longitude(Default.longitude)
                 .latitude(Default.latitude)
                 .build();
+    }
+
+    public static Societe defaultSociete(Societe societe) {
+        return Societe
+                .builder()
+                .id(Default.id)
+                .createdDate(Default.createdDate)
+                .lastModifiedDate(Default.lastModifiedDate)
+                .version(Default.version)
+                .deleted(Default.deleted)
+                .enabled(Default.enabled)
+                .name(Default.name)
+                .address(Default.address)
+                .phone(Default.phone)
+                .email(Default.email)
+                .longitude(Default.longitude)
+                .latitude(Default.latitude)
+                .build();
+
     }
 
     public static SocieteDTO updatedDTO() {
