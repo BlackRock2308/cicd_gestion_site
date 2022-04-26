@@ -119,7 +119,7 @@ pipeline {
               }
               steps {
                 script{
-                    copyArtifacts('tracking') {
+                    copyArtifacts('cicd_gestion_site') {
                         includePatterns('*.xml', '*.properties')
                         excludePatterns('test.xml', 'test.properties')
                         targetDirectory('files')
