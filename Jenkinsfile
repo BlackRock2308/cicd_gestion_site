@@ -109,7 +109,7 @@ pipeline {
                     script {
 
                         echo 'Should deploy on DEV env'
-                        bat "mvn deploy -DskipTests=true"
+                        bat "mvn install -DskipTests=true"
                     }
                 }
        }

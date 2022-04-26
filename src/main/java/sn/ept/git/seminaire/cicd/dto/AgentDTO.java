@@ -15,7 +15,5 @@ import java.util.Set;
 public class AgentDTO extends AgentBaseDTO {
 
     private Set<SiteDTO> sites;
-    //private Set<InterventionBaseDTO> interventionsIn;
-    //private Set<InterventionBaseDTO> interventionsOut;
 
 }

@@ -14,7 +14,4 @@ public class SiteDTO extends SiteBaseDTO {
 
     private SocieteDTO societe;
 
-    //private Set<InterventionDTO> interventions;
-    //private Set<AgentDTO> agents;
-
 }
