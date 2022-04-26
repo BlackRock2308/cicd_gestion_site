@@ -109,7 +109,7 @@ pipeline {
                     script {
 
                         echo 'Should deploy on DEV env'
-                        bat "mvn install -DskipTests=true"
+                        bat "mvn clean install -DskipTests=true"
                     }
                 }
        }
@@ -122,8 +122,6 @@ pipeline {
                     script {
                         echo 'Should install on DEV env'
                         bat "copy target\\tracking.war \"${tomcatWeb}\\tracking.war\""
-
-                
                     }
                 }
        }
@@ -151,7 +149,7 @@ pipeline {
             steps {
                 script {
                     echo 'Should deploy on REC env'
-                    bat "mvn install -DskipTests=true"
+                    bat "mvn clean install -DskipTests=true"
                 }
             }
        }
@@ -182,7 +180,6 @@ pipeline {
                      def url = 'http://localhost:8085/'
                      pingServerAfterDeployment (url)
                      echo 'Should deploy on DEV env'
-
                  }
            }
 
@@ -213,6 +210,9 @@ pipeline {
 
 
        stage("Maven Build") {
+            when {
+                branch 'release'
+            }
             steps {
                 script {
                     bat "mvn clean install -DskipTests=true"
@@ -281,14 +281,6 @@ pipeline {
                 }
             }
           post {
-                  success {
-                      emailext (
-                            subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-                            body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-                            <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
-                            recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-                            )
-                  }
                 changed {
                      emailext (
                            subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
