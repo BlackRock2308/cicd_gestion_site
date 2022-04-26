@@ -13,5 +13,4 @@ import sn.ept.git.seminaire.cicd.dto.base.ExerciceBaseDTO;
 public class ExerciceDTO extends ExerciceBaseDTO {
 
     private SocieteDTO societe;
-    // private Set<Intervention> interventions;
 }
