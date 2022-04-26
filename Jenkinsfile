@@ -104,7 +104,8 @@ pipeline {
                 }
                 steps {
                     script {
-                        echo 'Should deploy on DEV env'
+                      echo 'Should deploy on DEV env'
+                      bat "mvn install -Dmaven.test.failure.ignore=true"
                     }
                 }
        }
@@ -130,6 +131,7 @@ pipeline {
             steps {
                 script {
                     echo 'Should deploy on REC env'
+                    bat "mvn install -Dmaven.test.failure.ignore=true"
                 }
             }
        }
@@ -140,18 +142,11 @@ pipeline {
             }
            steps {
                  script{
-                    echo "Should Deploy on REC env"
+                     echo "Should Deploy on REC env"
                     sleep time: 30, unit: 'SECONDS'
                     def url = 'http://localhost:8085/users-management/'
-                    bat mvn deploy adapters: [
-                                  tomcat9(
-                                    credentialsId: 'TOMCAT-ID',
-                                    path: '',
-                                    url: 'http://localhost:8085/')
-                                    ]
-                                    , contextPath: 'users-management',
-                                    war: '**/*.war'
-                    pingServerAfterDeployment (url)
+                    deploy adapters: [tomcat9(credentialsId: 'TOMCAT-ID', path: '', url: 'http://localhost:8085/')], contextPath: 'users-management', war: '**/*.war
+                   //pingServerAfterDeployment (url)
                  }
            }
            post {
@@ -245,7 +240,7 @@ pipeline {
             steps {
                 script {
                     echo "Send Mail"
-                    //bat "mvn clean"
+                    bat "mvn clean"
                 }
             }
           post {
