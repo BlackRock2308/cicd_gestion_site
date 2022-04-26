@@ -4,14 +4,17 @@
 
 	<distributionManagement>
 		<repository>
-			<id>gestion-site-release</id>
-			<url>http://localhost:8081/repository/gestion-site-release/</url>
+			<id>site-releases</id>
+			<name>gestion-site-release</name>
+			<url>http://localhost:8081/repository/gestion-site-snapshot/</url>
 		</repository>
 		<snapshotRepository>
-			<id>gestion-site-snapshot</id>
-			<url>http://localhost:8081/repository/gestion-site-snapshot/</url>
+			<id>site-snapshots</id>
+			<name>gestion-site-snapshot</name>
+			<url>http://localhost:8081/repository/gestion-site-release/</url>
 		</snapshotRepository>
 	</distributionManagement>
+
 
 
 
@@ -28,7 +31,7 @@
 	<groupId>sn.ept.git.seminaire</groupId>
 	<artifactId>cicd</artifactId>
 	<packaging>war</packaging>
-	<version>1.0.0</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>tracking</name>
 	<description>Projet de tracking d'evenements</description>
 
@@ -254,6 +257,7 @@
 				<version>3.9.1.2184</version>
 			</plugin>
 
+
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -344,6 +348,25 @@
 								<goals>
 									<goal>report</goal>
 								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>properties-maven-plugin</artifactId>
+						<version>${properties-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<phase>initialize</phase>
+								<goals>
+									<goal>read-project-properties</goal>
+								</goals>
+								<configuration>
+									<files>
+										<file>sonar-project.properties</file>
+									</files>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>

@@ -2,14 +2,25 @@ package sn.ept.git.seminaire.cicd.mapper;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import sn.ept.git.seminaire.cicd.data.SocieteVMTestData;
 import sn.ept.git.seminaire.cicd.dto.vm.SocieteVM;
+import sn.ept.git.seminaire.cicd.mappers.SocieteMapperImpl;
 import sn.ept.git.seminaire.cicd.mappers.vm.SocieteVMMapper;
+import sn.ept.git.seminaire.cicd.mappers.vm.SocieteVMMapperImpl;
 import sn.ept.git.seminaire.cicd.models.Societe;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
+@ExtendWith(SpringExtension.class) // JUnit 5
+@ContextConfiguration(classes = {
+        SocieteVMMapperImpl.class,
+        SocieteMapperImpl.class,
+})
 class SocieteDTOMapperTest extends  MapperBaseTest{
 
     SocieteVM vm;
@@ -22,11 +33,13 @@ class SocieteDTOMapperTest extends  MapperBaseTest{
     @BeforeEach
     void setUp() {
         vm = SocieteVMTestData.defaultVM();
+        entity = SocieteVMTestData.defaultEntity(entity);
     }
 
 
     @Test
     void toEntity() {
+        vm = mapper.asDTO(entity);
         entity = mapper.asEntity(vm);
         assertThat(entity).isNotNull();
         assertThat(entity.getId()).isEqualTo(vm.getId());

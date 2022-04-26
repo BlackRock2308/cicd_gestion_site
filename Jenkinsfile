@@ -1,5 +1,22 @@
 EmailReceivers = 'smbaye@ept.sn'
 
+def tomcatWeb = 'C:\\apache-tomcat-9.0.62\\webapps'
+def tomcatBin = 'C:\\apache-tomcat-9.0.62\\bin'
+def tomcatStatus = ''
+
+
+def pingServerAfterDeployment( url){
+  def response = httpRequest url
+
+  if (response.status < 200 || response.status > 399){
+     error("Le déploiement ne s'est pas bien passé : code de retour sur URL ${url} : ${response.status}")
+     return
+  }else{
+      echo "Test de déploiement en environnement ${url} réussi, Kudos ...."
+  }
+}
+
+
 pipeline {
 
     agent any
@@ -11,7 +28,7 @@ pipeline {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
         NEXUS_URL = "192.168.56.1:8081"
-        NEXUS_REPOSITORY = "gestion-site-snapshot"
+        NEXUS_REPOSITORY = "maven-nexus-repo"
         NEXUS_CREDENTIAL_ID = "nexus-user-credentials"
         SONAR_CREDENTIAL_ID = ""
     }
@@ -29,14 +46,12 @@ pipeline {
         stage('Tests') {
             steps {
                 script {
-                    //echo "Skip my test"
-                     bat 'mvn clean test -Dmaven.test.failure.ignore=true'
+                     bat 'mvn clean test -Dmaven.test.failure.ignore=true '
                 }
            }
 
             post {
                failure {
-                // send to email
                  emailext (
                       subject: "POST TEST: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
                        body: """<p>TEST STATUS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
@@ -77,13 +92,11 @@ pipeline {
         }
 
         stage("Quality Gate"){
-
               steps {
                     script {
                         timeout(time: 1, unit: 'HOURS') {
                             waitForQualityGate abortPipeline: true
                         }
-
                     }
               }
         }
@@ -94,22 +107,39 @@ pipeline {
                 }
                 steps {
                     script {
+
                         echo 'Should deploy on DEV env'
+                        bat "mvn clean package -DskipTests=true"
                     }
                 }
        }
 
-       stage('Check Deploy DEV ') {
+       stage('Deploy master war file in tomcat Server') {
+                when {
+                   branch 'master'
+                }
+                steps {
+                    script {
+                        echo 'Should install on DEV env'
+                        bat "copy target\\tracking.war \"${tomcatWeb}\\tracking.war\""
+                    }
+                }
+       }
+
+       stage('Check Deploy DEV ,starting tomcat server') {
               when {
                   branch 'master'
               }
               steps {
-                script{
-                    //sleep time: 30, unit: 'SECONDS'
-                    //def url = 'http://178.170.114.95:8090/users-management/'
-                     echo 'Should deploy on DEV env'
+                    script{
+                         sleep(time:5, unit: "SECONDS")
+                         bat "${tomcatBin}\\startup.bat"
+                         sleep(time:100, unit: "SECONDS")
+                         def url = 'http://localhost:8085/'
+                         pingServerAfterDeployment (url)
+                         echo 'Should deploy on DEV env'
                     }
-               }
+              }
        }
 
        stage('Deploy REC') {
@@ -119,31 +149,72 @@ pipeline {
             steps {
                 script {
                     echo 'Should deploy on REC env'
+                    bat "mvn clean package -DskipTests=true"
                 }
             }
        }
 
-       stage('Check Deploy rec ') {
+       stage('Deploy REC war file on Tomcat Server') {
+            when {
+               branch 'rec'
+            }
+            steps {
+                script {
+                    echo 'Should deploy on REC env'
+                    bat "copy target\\tracking.war \"${tomcatWeb}\\tracking.war\""
+                }
+            }
+       }
+
+       stage('Check Deploy rec , start tomcat server') {
            when {
                branch 'rec'
             }
            steps {
-             script{
-                    echo "Should Deploy on REC env"
-                 //sleep time: 30, unit: 'SECONDS'
-                 //def url = 'http://178.170.114.95:8090/users-management/'
-             }
-          }
+                 script{
+                     sleep(time:5, unit: "SECONDS")
+                     bat "${tomcatBin}\\startup.bat"
+                     sleep(time:100, unit: "SECONDS")
+                     //sleep time: 30, unit: 'SECONDS'
+                     def url = 'http://localhost:8085/'
+                     pingServerAfterDeployment (url)
+                     echo 'Should deploy on DEV env'
+                 }
+           }
+
+
+           post {
+                failure {
+                     emailext (
+                        subject: "ERRORS DEPLOYMENT REC: REC '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                        body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                        <p>Your artifcat is not deployed on tomcat server</p>
+                        <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+                        recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                    )
+                }
+
+                success {
+                    emailext (
+                        subject: "DEPLOYMENT OF REC IN TOMCAT '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                        body: """<p>REC BRANCH: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+                        <p>Your artificat in rec is deployed successfully</p>
+                        <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+                        recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                    )
+                }
+           }
+
        }
 
 
-
-
-
        stage("Maven Build") {
+            when {
+                branch 'release'
+            }
             steps {
                 script {
-                    bat "mvn install -DskipTests=true"
+                    bat "mvn clean package -Dmaven.test.failure.ignore=true"
                 }
             }
        }
@@ -209,14 +280,6 @@ pipeline {
                 }
             }
           post {
-                  success {
-                      emailext (
-                            subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-                            body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-                            <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
-                            recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-                            )
-                  }
                 changed {
                      emailext (
                            subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
@@ -238,5 +301,4 @@ pipeline {
       }
     }
 }
-
 
