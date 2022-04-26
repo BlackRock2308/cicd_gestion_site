@@ -109,6 +109,18 @@ pipeline {
                     script {
 
                         echo 'Should deploy on DEV env'
+                        bat "mvn deploy -DskipTests=true"
+                    }
+                }
+       }
+
+       stage('Deploy master war file in tomcat Server') {
+                when {
+                   branch 'master'
+                }
+                steps {
+                    script {
+                        echo 'Should install on DEV env'
                         bat "copy target\\tracking.war \"${tomcatWeb}\\tracking.war\""
 
                 
@@ -133,6 +145,18 @@ pipeline {
        }
 
        stage('Deploy REC') {
+            when {
+               branch 'rec'
+            }
+            steps {
+                script {
+                    echo 'Should deploy on REC env'
+                    bat "mvn install -DskipTests=true"
+                }
+            }
+       }
+
+       stage('Deploy REC war file on Tomcat Server') {
             when {
                branch 'rec'
             }
@@ -191,7 +215,7 @@ pipeline {
        stage("Maven Build") {
             steps {
                 script {
-                    bat "mvn install -DskipTests=true"
+                    bat "mvn clean install -DskipTests=true"
                 }
             }
        }
