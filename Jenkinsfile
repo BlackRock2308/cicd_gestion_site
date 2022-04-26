@@ -46,7 +46,7 @@ pipeline {
         stage('Tests') {
             steps {
                 script {
-                     bat '-Dmaven.test.failure.ignore=true mvn clean test '
+                     bat 'mvn clean test -Dmaven.test.failure.ignore=true '
                 }
            }
 
