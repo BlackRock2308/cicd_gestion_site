@@ -15,13 +15,6 @@
 
 
 	<!-- DOwnload the dependancies from gestion-site-maven-group-->
-	<repositories>
-		<repository>
-			<id>gestion-site-central</id>
-			<url>http://localhost:8081/repository/gestion-site-maven-group/</url>
-		</repository>
-	</repositories>
-
 
 
 
