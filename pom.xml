@@ -14,7 +14,7 @@
 	</distributionManagement>
 
 
-	<!-- DOwnload the dependancies from gestion-site-maven-group
+	<!-- DOwnload the dependancies from gestion-site-maven-group-->
 	<repositories>
 		<repository>
 			<id>gestion-site-central</id>
@@ -22,7 +22,7 @@
 		</repository>
 	</repositories>
 
-	-->
+
 
 
 
