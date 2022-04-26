@@ -10,6 +10,7 @@ import sn.ept.git.seminaire.cicd.models.Societe;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 class SocieteDTOMapperTest extends  MapperBaseTest{
 
     SocieteVM vm;
