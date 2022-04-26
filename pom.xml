@@ -4,11 +4,13 @@
 
 	<distributionManagement>
 		<repository>
-			<id>nexus-releases</id>
+			<id>site-releases</id>
+			<name>gestion-site-release</name>
 			<url>http://localhost:8081/repository/gestion-site-release/</url>
 		</repository>
 		<snapshotRepository>
-			<id>nexus-snapshots</id>
+			<id>site-snapshots</id>
+			<name>gestion-site-snapshot</name>
 			<url>http://localhost:8081/repository/gestion-site-snapshot/</url>
 		</snapshotRepository>
 	</distributionManagement>
