@@ -27,7 +27,7 @@ public class TestData {
         public static final float latitude=RandomUtils.nextFloat();
         public static final Instant start = Instant.now();
         public static final Instant end =Instant.now();
-        public static final StatusExercice status = null;
+        public static final StatusExercice status = StatusExercice.OPEN;
 
     }
 
@@ -49,7 +49,7 @@ public class TestData {
 
         public static final Instant start = Instant.now();
         public static final Instant end =Instant.now();
-        public static final StatusExercice status = null;
+        public static final StatusExercice status = StatusExercice.OPEN;
 
     }
 
