@@ -133,9 +133,9 @@ pipeline {
               steps {
                     script{
                          sleep(time:5, unit: "SECONDS")
-                         //bat "${tomcatBin}\\startup.bat"
+                         bat "${tomcatBin}\\startup.bat"
                          sleep(time:100, unit: "SECONDS")
-                         def url = 'http://localhost:8085/tracking/'
+                         def url = 'http://localhost:8085/'
                          pingServerAfterDeployment (url)
                          echo 'Should deploy on DEV env'
                     }
