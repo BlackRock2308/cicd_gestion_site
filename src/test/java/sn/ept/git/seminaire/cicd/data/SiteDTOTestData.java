@@ -1,5 +1,7 @@
 package sn.ept.git.seminaire.cicd.data;
 import sn.ept.git.seminaire.cicd.dto.SiteDTO;
+import sn.ept.git.seminaire.cicd.models.Site;
+import sn.ept.git.seminaire.cicd.models.Societe;
 
 
 public final class SiteDTOTestData extends TestData{
@@ -35,5 +37,19 @@ public final class SiteDTOTestData extends TestData{
                 .longitude(Update.longitude)
                 .latitude(Update.latitude)
                 .build();
+    }
+
+
+    public static Site defaultEntity(Site site) {
+        return Site
+                .builder()
+                .id(Default.id)
+                .name(Default.name)
+                .phone(Default.phone)
+                .email(Default.email)
+                .longitude(Default.longitude)
+                .latitude(Default.latitude)
+                .build();
+
     }
 }

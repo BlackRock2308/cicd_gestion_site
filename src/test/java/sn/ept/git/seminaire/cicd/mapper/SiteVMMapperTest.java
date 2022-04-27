@@ -30,11 +30,13 @@ class SiteVMMapperTest extends  MapperBaseTest{
     @BeforeEach
     void setUp() {
         dto = SiteDTOTestData.defaultDTO();
+        entity = SiteDTOTestData.defaultEntity(entity);
     }
 
 
     @Test
     void toEntity() {
+        dto = mapper.asDTO(entity);
         entity = mapper.asEntity(dto);
         assertThat(entity).isNotNull();
         assertThat(entity.getId()).isEqualTo(dto.getId());
