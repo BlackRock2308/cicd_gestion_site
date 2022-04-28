@@ -15,8 +15,10 @@ import sn.ept.git.seminaire.cicd.exceptions.ItemNotFoundException;
 import sn.ept.git.seminaire.cicd.mappers.SiteMapper;
 import sn.ept.git.seminaire.cicd.mappers.vm.SiteVMMapper;
 import sn.ept.git.seminaire.cicd.models.Site;
+import sn.ept.git.seminaire.cicd.models.Societe;
 import sn.ept.git.seminaire.cicd.repositories.SiteRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -133,6 +135,7 @@ class SiteServiceTest extends ServiceBaseTest {
                 () ->service.delete(UUID.randomUUID())
         );
     }
+
 
 /*
     findAll

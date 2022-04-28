@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import sn.ept.git.seminaire.cicd.data.ExerciceVMTestData;
-import sn.ept.git.seminaire.cicd.dto.vm.ExerciceVM;
-import sn.ept.git.seminaire.cicd.mappers.vm.ExerciceVMMapper;
-import sn.ept.git.seminaire.cicd.models.Exercice;
+import sn.ept.git.seminaire.cicd.data.AgentVMTestData;
+import sn.ept.git.seminaire.cicd.dto.vm.AgentVM;
+import sn.ept.git.seminaire.cicd.mappers.vm.AgentVMMapper;
+import sn.ept.git.seminaire.cicd.models.Agent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,19 +18,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 
-class ExerciceDTOMapperTest extends  MapperBaseTest{
+class AgentDTOMapperTest extends  MapperBaseTest{
 
     @Autowired
-    private ExerciceVMMapper mapper;
-    ExerciceVM vm;
-    Exercice entity;
+    private AgentVMMapper mapper;
+    AgentVM vm;
+    Agent entity;
+
 
 
 
     @BeforeEach
     void setUp() {
-        vm = ExerciceVMTestData.defaultVM();
-        entity = ExerciceVMTestData.defaultEntity(entity);
+        vm = AgentVMTestData.defaultVM();
+        entity = AgentVMTestData.defaultEntity(entity);
     }
 
 
@@ -45,7 +46,11 @@ class ExerciceDTOMapperTest extends  MapperBaseTest{
         assertThat(entity.getVersion()).isEqualTo(vm.getVersion());
         assertThat(entity.isDeleted()).isEqualTo(vm.isDeleted());
         assertThat(entity.isEnabled()).isEqualTo(vm.isEnabled());
-        assertThat(entity.getName()).isEqualTo(vm.getName());
+        assertThat(entity.getFirstName()).isEqualTo(vm.getFirstName());
+        assertThat(entity.getEmail()).isEqualTo(vm.getEmail());
+        assertThat(entity.getLastName()).isEqualTo(vm.getLastName());
+        assertThat(entity.getAddress()).isEqualTo(vm.getAddress());
+        assertThat(entity.getPhone()).isEqualTo(vm.getPhone());
     }
 
     @Test
@@ -59,6 +64,10 @@ class ExerciceDTOMapperTest extends  MapperBaseTest{
         assertThat(vm.getVersion()).isEqualTo(entity.getVersion());
         assertThat(vm.isDeleted()).isEqualTo(entity.isDeleted());
         assertThat(vm.isEnabled()).isEqualTo(entity.isEnabled());
-        assertThat(vm.getName()).isEqualTo(entity.getName());
+        assertThat(vm.getFirstName()).isEqualTo(entity.getFirstName());
+        assertThat(vm.getEmail()).isEqualTo(entity.getEmail());
+        assertThat(vm.getLastName()).isEqualTo(entity.getLastName());
+        assertThat(vm.getAddress()).isEqualTo(entity.getAddress());
+        assertThat(vm.getPhone()).isEqualTo(entity.getPhone());
     }
 }

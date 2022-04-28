@@ -1,12 +1,12 @@
 package sn.ept.git.seminaire.cicd.data;
 
-import sn.ept.git.seminaire.cicd.dto.vm.SocieteVM;
-import sn.ept.git.seminaire.cicd.models.Societe;
+import sn.ept.git.seminaire.cicd.dto.EventDTO;
+import sn.ept.git.seminaire.cicd.models.Event;
 
-public final class SocieteVMTestData extends TestData {
+public final class EventDTOTestData extends TestData {
 
-    public static SocieteVM defaultVM() {
-        return SocieteVM
+    public static EventDTO defaultDTO() {
+        return EventDTO
                 .builder()
                 .id(Default.id)
                 .createdDate(Default.createdDate)
@@ -14,17 +14,15 @@ public final class SocieteVMTestData extends TestData {
                 .version(Default.version)
                 .deleted(Default.deleted)
                 .enabled(Default.enabled)
-                .name(Default.name)
-                .address(Default.address)
-                .phone(Default.phone)
-                .email(Default.email)
-                .longitude(Default.longitude)
+                .title(Default.title)
+                .description(Default.description)
                 .latitude(Default.latitude)
+                .longitude(Default.longitude)
                 .build();
     }
 
-    public static SocieteVM updatedVM() {
-        return SocieteVM
+    public static EventDTO updatedDTO() {
+        return EventDTO
                 .builder()
                 .id(Default.id)
                 .createdDate(Update.createdDate)
@@ -32,17 +30,15 @@ public final class SocieteVMTestData extends TestData {
                 .version(Update.version)
                 .deleted(Update.deleted)
                 .enabled(Update.enabled)
-                .name(Update.name)
-                .address(Update.address)
-                .phone(Update.phone)
-                .email(Update.email)
-                .longitude(Update.longitude)
-                .latitude(Update.latitude)
+                .title(Default.title)
+                .description(Default.description)
+                .latitude(Default.latitude)
+                .longitude(Default.longitude)
                 .build();
     }
 
-    public static Societe defaultEntity(Societe societe) {
-        return Societe
+    public static Event defaultEntity(Event entity) {
+        return Event
                 .builder()
                 .id(Default.id)
                 .createdDate(Default.createdDate)
@@ -50,12 +46,11 @@ public final class SocieteVMTestData extends TestData {
                 .version(Default.version)
                 .deleted(Default.deleted)
                 .enabled(Default.enabled)
-                .name(Default.name)
-                .address(Default.address)
-                .phone(Default.phone)
-                .email(Default.email)
-                .longitude(Default.longitude)
+                .title(Default.title)
+                .description(Default.description)
                 .latitude(Default.latitude)
+                .longitude(Default.longitude)
                 .build();
     }
+
 }

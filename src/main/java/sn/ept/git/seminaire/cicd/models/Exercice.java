@@ -10,6 +10,7 @@ import sn.ept.git.seminaire.cicd.utils.SizeMapping;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.HashSet;
@@ -46,7 +47,7 @@ public class Exercice extends BaseEntity {
 
     @Where(clause = BaseEntity.CLAUSE)
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_societe")
     private Societe societe;
 
@@ -57,7 +58,7 @@ public class Exercice extends BaseEntity {
     @OneToMany(
             mappedBy = "exercice",
             fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+            cascade = {CascadeType.ALL, CascadeType.MERGE}
     )
     private Set<Intervention> interventions = new HashSet<>();
 }

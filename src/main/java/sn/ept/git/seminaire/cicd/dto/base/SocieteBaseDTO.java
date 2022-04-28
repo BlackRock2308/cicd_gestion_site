@@ -18,7 +18,7 @@ import javax.validation.constraints.Size;
 public class SocieteBaseDTO extends BaseDTO {
 
 
-    @NotBlank
+
     @Size(min = SizeMapping.Name.MIN,max = SizeMapping.Name.MIN)
     private  String name;
     @Size(min = SizeMapping.Adresse.MIN,max = SizeMapping.Adresse.MIN)

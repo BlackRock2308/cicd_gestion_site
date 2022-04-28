@@ -1,12 +1,12 @@
 package sn.ept.git.seminaire.cicd.data;
 
-import sn.ept.git.seminaire.cicd.dto.vm.SocieteVM;
-import sn.ept.git.seminaire.cicd.models.Societe;
+import sn.ept.git.seminaire.cicd.dto.vm.AgentVM;
+import sn.ept.git.seminaire.cicd.models.Agent;
 
-public final class SocieteVMTestData extends TestData {
+public final class AgentVMTestData extends TestData {
 
-    public static SocieteVM defaultVM() {
-        return SocieteVM
+    public static AgentVM defaultVM() {
+        return AgentVM
                 .builder()
                 .id(Default.id)
                 .createdDate(Default.createdDate)
@@ -14,17 +14,16 @@ public final class SocieteVMTestData extends TestData {
                 .version(Default.version)
                 .deleted(Default.deleted)
                 .enabled(Default.enabled)
-                .name(Default.name)
+                .firstName(Default.firstName)
+                .lastName(Default.lastName)
                 .address(Default.address)
                 .phone(Default.phone)
                 .email(Default.email)
-                .longitude(Default.longitude)
-                .latitude(Default.latitude)
                 .build();
     }
 
-    public static SocieteVM updatedVM() {
-        return SocieteVM
+    public static AgentVM updatedVM() {
+        return AgentVM
                 .builder()
                 .id(Default.id)
                 .createdDate(Update.createdDate)
@@ -32,17 +31,16 @@ public final class SocieteVMTestData extends TestData {
                 .version(Update.version)
                 .deleted(Update.deleted)
                 .enabled(Update.enabled)
-                .name(Update.name)
+                .firstName(Update.firstName)
+                .lastName(Update.lastName)
                 .address(Update.address)
                 .phone(Update.phone)
                 .email(Update.email)
-                .longitude(Update.longitude)
-                .latitude(Update.latitude)
                 .build();
     }
 
-    public static Societe defaultEntity(Societe societe) {
-        return Societe
+    public static Agent defaultEntity(Agent entity) {
+        return Agent
                 .builder()
                 .id(Default.id)
                 .createdDate(Default.createdDate)
@@ -50,12 +48,11 @@ public final class SocieteVMTestData extends TestData {
                 .version(Default.version)
                 .deleted(Default.deleted)
                 .enabled(Default.enabled)
-                .name(Default.name)
+                .firstName(Default.firstName)
+                .lastName(Default.lastName)
                 .address(Default.address)
                 .phone(Default.phone)
                 .email(Default.email)
-                .longitude(Default.longitude)
-                .latitude(Default.latitude)
                 .build();
     }
 }

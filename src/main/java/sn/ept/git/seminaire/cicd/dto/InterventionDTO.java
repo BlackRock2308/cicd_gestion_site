@@ -16,9 +16,9 @@ public class InterventionDTO extends InterventionBaseDTO {
 
     private SiteDTO site;
     private ExerciceDTO exercice;
-    private Set<EventDTO> events;
-    private Set<ToolDTO> tools;
-    private Set<AgentDTO> agentsIn;
-    private Set<AgentDTO> agentsOut;
+    //private Set<EventDTO> events;
+    //private Set<ToolDTO> tools;
+    //private Set<AgentDTO> agentsIn;
+    //private Set<AgentDTO> agentsOut;
 
 }

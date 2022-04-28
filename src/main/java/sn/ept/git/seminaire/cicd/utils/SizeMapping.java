@@ -19,7 +19,7 @@ public final class SizeMapping {
         private Email(){
             super();
         }
-        public static final int MIN=0;
+        public static final int MIN=2;
         public static final int MAX=50;
     }
 
@@ -35,7 +35,7 @@ public final class SizeMapping {
         private Adresse(){
             super();
         }
-        public static final int MIN=0;
+        public static final int MIN=2;
         public static final int MAX=512;
     }
 
@@ -43,7 +43,7 @@ public final class SizeMapping {
         private Description(){
             super();
         }
-        public static final int MIN=0;
+        public static final int MIN=2;
         public static final int MAX=255;
     }
 
@@ -52,7 +52,7 @@ public final class SizeMapping {
         private Comment(){
             super();
         }
-        public static final int MIN=0;
+        public static final int MIN=2;
         public static final int MAX=255;
     }
 
@@ -60,7 +60,7 @@ public final class SizeMapping {
         private Location(){
             super();
         }
-        public static final int MIN=0;
+        public static final int MIN=2;
         public static final int MAX=255;
     }
 

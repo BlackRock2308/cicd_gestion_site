@@ -19,18 +19,16 @@ import java.util.UUID;
 public class InterventionVM extends InterventionBaseDTO {
 
 
-    @NotNull
+
     @JsonProperty("id_site")
     private UUID idSite;
 
-    @NotNull
     @JsonProperty("id_exercice")
     private UUID idExercice;
 
     @JsonProperty("ids_tools")
     private Set<UUID> idsTools;
 
-    @NotEmpty
     @JsonProperty("ids_agents_in")
     private Set<UUID> idsAgentsIn;
 

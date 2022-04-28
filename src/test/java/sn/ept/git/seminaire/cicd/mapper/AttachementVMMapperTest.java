@@ -7,10 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import sn.ept.git.seminaire.cicd.data.ExerciceVMTestData;
-import sn.ept.git.seminaire.cicd.dto.vm.ExerciceVM;
-import sn.ept.git.seminaire.cicd.mappers.vm.ExerciceVMMapper;
-import sn.ept.git.seminaire.cicd.models.Exercice;
+import sn.ept.git.seminaire.cicd.data.AttachementVMTestData;
+import sn.ept.git.seminaire.cicd.dto.vm.AttachementVM;
+import sn.ept.git.seminaire.cicd.mappers.vm.AttachementVMMapper;
+import sn.ept.git.seminaire.cicd.mappers.AttachementMapper;
+import sn.ept.git.seminaire.cicd.models.Attachement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,19 +19,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 
-class ExerciceDTOMapperTest extends  MapperBaseTest{
+class AttachementVMMapperTest extends  MapperBaseTest{
 
     @Autowired
-    private ExerciceVMMapper mapper;
-    ExerciceVM vm;
-    Exercice entity;
+    private AttachementVMMapper mapper;
+    AttachementVM vm;
+    Attachement entity;
+
 
 
 
     @BeforeEach
     void setUp() {
-        vm = ExerciceVMTestData.defaultVM();
-        entity = ExerciceVMTestData.defaultEntity(entity);
+        vm = AttachementVMTestData.defaultVM();
+        entity = AttachementVMTestData.defaultEntity(entity);
     }
 
 
@@ -46,10 +48,14 @@ class ExerciceDTOMapperTest extends  MapperBaseTest{
         assertThat(entity.isDeleted()).isEqualTo(vm.isDeleted());
         assertThat(entity.isEnabled()).isEqualTo(vm.isEnabled());
         assertThat(entity.getName()).isEqualTo(vm.getName());
+        assertThat(entity.getDescription()).isEqualTo(vm.getDescription());
+        assertThat(entity.getLocation()).isEqualTo(vm.getLocation());
+        assertThat(entity.getHash()).isEqualTo(vm.getHash());
+
     }
 
     @Test
-    void toDTO() {
+    void toVM() {
         entity = mapper.asEntity(vm);
         vm =mapper.asDTO(entity);
         assertThat(vm).isNotNull();
@@ -60,5 +66,8 @@ class ExerciceDTOMapperTest extends  MapperBaseTest{
         assertThat(vm.isDeleted()).isEqualTo(entity.isDeleted());
         assertThat(vm.isEnabled()).isEqualTo(entity.isEnabled());
         assertThat(vm.getName()).isEqualTo(entity.getName());
+        assertThat(vm.getDescription()).isEqualTo(entity.getDescription());
+        assertThat(vm.getLocation()).isEqualTo(entity.getLocation());
+        assertThat(vm.getHash()).isEqualTo(entity.getHash());
     }
 }

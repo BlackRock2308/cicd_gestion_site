@@ -7,10 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import sn.ept.git.seminaire.cicd.data.ExerciceVMTestData;
-import sn.ept.git.seminaire.cicd.dto.vm.ExerciceVM;
-import sn.ept.git.seminaire.cicd.mappers.vm.ExerciceVMMapper;
-import sn.ept.git.seminaire.cicd.models.Exercice;
+import sn.ept.git.seminaire.cicd.data.InterventionDTOTestData;
+import sn.ept.git.seminaire.cicd.data.InterventionVMTestData;
+import sn.ept.git.seminaire.cicd.dto.InterventionDTO;
+import sn.ept.git.seminaire.cicd.dto.vm.InterventionVM;
+import sn.ept.git.seminaire.cicd.mappers.InterventionMapper;
+import sn.ept.git.seminaire.cicd.mappers.vm.InterventionVMMapper;
+import sn.ept.git.seminaire.cicd.models.Intervention;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,21 +21,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 
-class ExerciceDTOMapperTest extends  MapperBaseTest{
+class InterventionDTOMapperTest extends  MapperBaseTest{
 
     @Autowired
-    private ExerciceVMMapper mapper;
-    ExerciceVM vm;
-    Exercice entity;
+    private InterventionVMMapper mapper;  //change InterventionMapper to InterventionVMMapper
+    InterventionVM vm; //Use InterventionVM instead of InterventionDTO
+    Intervention entity;
 
 
 
     @BeforeEach
     void setUp() {
-        vm = ExerciceVMTestData.defaultVM();
-        entity = ExerciceVMTestData.defaultEntity(entity);
+        vm = InterventionVMTestData.defaultVM();
+        entity = InterventionVMTestData.defaultEntity(entity);
     }
-
 
     @Test
     void toEntity() {
@@ -45,13 +47,17 @@ class ExerciceDTOMapperTest extends  MapperBaseTest{
         assertThat(entity.getVersion()).isEqualTo(vm.getVersion());
         assertThat(entity.isDeleted()).isEqualTo(vm.isDeleted());
         assertThat(entity.isEnabled()).isEqualTo(vm.isEnabled());
-        assertThat(entity.getName()).isEqualTo(vm.getName());
+        assertThat(entity.getStatus()).isEqualTo(vm.getStatus());
+        assertThat(entity.getStart()).isEqualTo(vm.getStart());
+        assertThat(entity.getEnd()).isEqualTo(vm.getEnd());
+        assertThat(entity.getCommentIn()).isEqualTo(vm.getCommentIn());
+        assertThat(entity.getCommentOut()).isEqualTo(vm.getCommentOut());
     }
 
     @Test
-    void toDTO() {
+    void toVM() {
         entity = mapper.asEntity(vm);
-        vm =mapper.asDTO(entity);
+        vm = mapper.asDTO(entity);
         assertThat(vm).isNotNull();
         assertThat(vm.getId()).isEqualTo(entity.getId());
         assertThat(vm.getCreatedDate()).isEqualTo(entity.getCreatedDate());
@@ -59,6 +65,10 @@ class ExerciceDTOMapperTest extends  MapperBaseTest{
         assertThat(vm.getVersion()).isEqualTo(entity.getVersion());
         assertThat(vm.isDeleted()).isEqualTo(entity.isDeleted());
         assertThat(vm.isEnabled()).isEqualTo(entity.isEnabled());
-        assertThat(vm.getName()).isEqualTo(entity.getName());
+        assertThat(vm.getStatus()).isEqualTo(entity.getStatus());
+        assertThat(vm.getStart()).isEqualTo(entity.getStart());
+        assertThat(vm.getEnd()).isEqualTo(entity.getEnd());
+        assertThat(vm.getCommentIn()).isEqualTo(entity.getCommentIn());
+        assertThat(vm.getCommentOut()).isEqualTo(entity.getCommentOut());
     }
 }
