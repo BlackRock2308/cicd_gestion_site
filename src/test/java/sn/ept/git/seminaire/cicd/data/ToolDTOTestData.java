@@ -1,6 +1,7 @@
 package sn.ept.git.seminaire.cicd.data;
 
 import sn.ept.git.seminaire.cicd.dto.ToolDTO;
+import sn.ept.git.seminaire.cicd.models.Tool;
 
 public final class ToolDTOTestData extends TestData {
 
@@ -29,6 +30,20 @@ public final class ToolDTOTestData extends TestData {
                 .enabled(Update.enabled)
                 .name(Update.name)
                 .description(Update.description)
+                .build();
+    }
+
+    public static Tool defaultEntity(Tool entity) {
+        return Tool
+                .builder()
+                .id(Default.id)
+                .createdDate(Default.createdDate)
+                .lastModifiedDate(Default.lastModifiedDate)
+                .version(Default.version)
+                .deleted(Default.deleted)
+                .enabled(Default.enabled)
+                .name(Default.name)
+                .description(Default.description)
                 .build();
     }
 }

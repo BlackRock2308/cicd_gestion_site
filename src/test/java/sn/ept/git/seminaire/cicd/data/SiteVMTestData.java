@@ -1,6 +1,7 @@
 package sn.ept.git.seminaire.cicd.data;
 
 import sn.ept.git.seminaire.cicd.dto.vm.SiteVM;
+import sn.ept.git.seminaire.cicd.models.Site;
 
 public final class SiteVMTestData extends TestData {
     public static SiteVM defaultVM() {
@@ -35,5 +36,18 @@ public final class SiteVMTestData extends TestData {
                 .longitude(TestData.Update.longitude)
                 .latitude(TestData.Update.latitude)
                 .build();
+    }
+
+    public static Site defaultEntity(Site site) {
+        return Site
+                .builder()
+                .id(Default.id)
+                .name(Default.name)
+                .phone(Default.phone)
+                .email(Default.email)
+                .longitude(Default.longitude)
+                .latitude(Default.latitude)
+                .build();
+
     }
 }

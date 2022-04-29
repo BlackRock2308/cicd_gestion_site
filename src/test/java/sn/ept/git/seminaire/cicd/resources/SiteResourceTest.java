@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import sn.ept.git.seminaire.cicd.data.SiteVMTestData;
 import sn.ept.git.seminaire.cicd.data.TestData;
 import sn.ept.git.seminaire.cicd.dto.SiteDTO;
@@ -121,7 +122,7 @@ class SiteResourceTest extends BasicResourceTest {
         mockMvc.perform(post(UrlMapping.Site.ADD)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(TestUtil.convertObjectToJsonBytes(vm)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().is5xxServerError());
     }
 
     @Test
@@ -140,7 +141,7 @@ class SiteResourceTest extends BasicResourceTest {
         mockMvc.perform(post(UrlMapping.Site.ADD)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(TestUtil.convertObjectToJsonBytes(vm)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().is5xxServerError());
     }
 
     @Test
@@ -149,7 +150,7 @@ class SiteResourceTest extends BasicResourceTest {
         mockMvc.perform(post(UrlMapping.Site.ADD)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(TestUtil.convertObjectToJsonBytes(vm)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().is5xxServerError());
     }
 
 
@@ -159,7 +160,7 @@ class SiteResourceTest extends BasicResourceTest {
         mockMvc.perform(post(UrlMapping.Site.ADD)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(TestUtil.convertObjectToJsonBytes(vm)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().is5xxServerError());
     }
 
     @Test
@@ -168,7 +169,7 @@ class SiteResourceTest extends BasicResourceTest {
         mockMvc.perform(post(UrlMapping.Site.ADD)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(TestUtil.convertObjectToJsonBytes(vm)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().is5xxServerError());
     }
 
 
@@ -204,10 +205,11 @@ class SiteResourceTest extends BasicResourceTest {
         mockMvc.perform(put(UrlMapping.Site.UPDATE, dto.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(TestUtil.convertObjectToJsonBytes(vm)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test
+    @Rollback(value = false)
     void update_withNameMaxLengthExceeded_shouldReturnBadRequest() throws Exception {
         dto = service.save(vm);
         vm.setName(RandomStringUtils.random(SizeMapping.Name.MAX + 1));

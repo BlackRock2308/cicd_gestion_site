@@ -1,6 +1,7 @@
 package sn.ept.git.seminaire.cicd.repository;
 
 import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Component;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -25,10 +27,9 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@SpringBootTest
+@SpringBootTest()
 @RunWith(SpringRunner.class)
 @ContextConfiguration
-
 class SocieteRepositoryTest extends RepositoryBaseTest {
 
     @Autowired
@@ -47,12 +48,21 @@ class SocieteRepositoryTest extends RepositoryBaseTest {
     void setUp() {
         dto = SocieteDTOTestData.defaultDTO();
         entity = mapper.asEntity(dto);
+        //repository.deleteAll();
+        repository.saveAndFlush(entity);
+    }
+
+    @AfterEach
+    public void destroyAll(){
         repository.deleteAll();
-        entity = repository.saveAndFlush(entity);
     }
 
     @Test
+    @Rollback(value = false)
     void givenRepository_whenFindByName_thenResult() {
+        dto = SocieteDTOTestData.defaultDTO();
+        entity = mapper.asEntity(dto);
+        entity = repository.saveAndFlush(entity);
         Optional<Societe> optional = repository.findByName(entity.getName());
         assertThat(optional).isNotNull();
         assertThat(optional).isPresent();

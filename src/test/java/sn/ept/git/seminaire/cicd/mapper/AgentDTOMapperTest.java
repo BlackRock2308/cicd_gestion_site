@@ -31,11 +31,13 @@ class AgentDTOMapperTest extends  MapperBaseTest{
     @BeforeEach
     void setUp() {
         vm = AgentVMTestData.defaultVM();
+        entity = AgentVMTestData.defaultEntity(entity);
     }
 
 
     @Test
     void toEntity() {
+        vm = mapper.asDTO(entity);
         entity = mapper.asEntity(vm);
         assertThat(entity).isNotNull();
         assertThat(entity.getId()).isEqualTo(vm.getId());

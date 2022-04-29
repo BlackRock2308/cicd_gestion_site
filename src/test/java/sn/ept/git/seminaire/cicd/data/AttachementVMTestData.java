@@ -1,6 +1,7 @@
 package sn.ept.git.seminaire.cicd.data;
 
 import sn.ept.git.seminaire.cicd.dto.vm.AttachementVM;
+import sn.ept.git.seminaire.cicd.models.Attachement;
 
 public final class AttachementVMTestData extends TestData {
 
@@ -29,6 +30,22 @@ public final class AttachementVMTestData extends TestData {
                 .version(Update.version)
                 .deleted(Update.deleted)
                 .enabled(Update.enabled)
+                .name(Default.name)
+                .description(Default.description)
+                .location(Default.location)
+                .hash(Default.hash)
+                .build();
+    }
+
+    public static Attachement defaultEntity(Attachement entity) {
+        return Attachement
+                .builder()
+                .id(Default.id)
+                .createdDate(Default.createdDate)
+                .lastModifiedDate(Default.lastModifiedDate)
+                .version(Default.version)
+                .deleted(Default.deleted)
+                .enabled(Default.enabled)
                 .name(Default.name)
                 .description(Default.description)
                 .location(Default.location)

@@ -1,6 +1,7 @@
 package sn.ept.git.seminaire.cicd.data;
 
 import sn.ept.git.seminaire.cicd.dto.AgentDTO;
+import sn.ept.git.seminaire.cicd.models.Agent;
 
 public final class AgentDTOTestData extends TestData {
 
@@ -36,5 +37,23 @@ public final class AgentDTOTestData extends TestData {
                 .phone(Update.phone)
                 .email(Update.email)
                 .build();
+    }
+
+    public static Agent defaultEntity(Agent entity) {
+        return Agent
+                .builder()
+                .id(Default.id)
+                .createdDate(Default.createdDate)
+                .lastModifiedDate(Default.lastModifiedDate)
+                .version(Default.version)
+                .deleted(Default.deleted)
+                .enabled(Default.enabled)
+                .firstName(Default.firstName)
+                .lastName(Default.lastName)
+                .address(Default.address)
+                .phone(Default.phone)
+                .email(Default.email)
+                .build();
+
     }
 }

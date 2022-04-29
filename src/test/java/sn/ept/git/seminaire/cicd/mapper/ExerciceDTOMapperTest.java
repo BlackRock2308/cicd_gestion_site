@@ -27,15 +27,16 @@ class ExerciceDTOMapperTest extends  MapperBaseTest{
 
 
 
-
     @BeforeEach
     void setUp() {
         vm = ExerciceVMTestData.defaultVM();
+        entity = ExerciceVMTestData.defaultEntity(entity);
     }
 
 
     @Test
     void toEntity() {
+        vm = mapper.asDTO(entity);
         entity = mapper.asEntity(vm);
         assertThat(entity).isNotNull();
         assertThat(entity.getId()).isEqualTo(vm.getId());

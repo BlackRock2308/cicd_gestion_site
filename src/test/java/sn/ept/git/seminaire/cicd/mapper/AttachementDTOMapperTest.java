@@ -31,11 +31,13 @@ class AttachementDTOMapperTest extends  MapperBaseTest{
     @BeforeEach
     void setUp() {
         dto = AttachementDTOTestData.defaultDTO();
+        entity = AttachementDTOTestData.defaultEntity(entity);
     }
 
 
     @Test
     void toEntity() {
+        dto = mapper.asDTO(entity);
         entity = mapper.asEntity(dto);
         assertThat(entity).isNotNull();
         assertThat(entity.getId()).isEqualTo(dto.getId());
