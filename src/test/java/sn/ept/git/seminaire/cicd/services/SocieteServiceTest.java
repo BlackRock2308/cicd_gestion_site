@@ -59,6 +59,10 @@ class SocieteServiceTest extends ServiceBaseTest {
     static void beforeAll(){
         log.info(" before all");
         vm = SocieteVMTestData.defaultVM();
+<<<<<<< HEAD
+        //societe = SocieteVMTestData.defaultEntity(societe);
+=======
+>>>>>>> 1b5393037d1a7f0652de6893ac7ea8ab81623d79
     }
 
     @BeforeEach

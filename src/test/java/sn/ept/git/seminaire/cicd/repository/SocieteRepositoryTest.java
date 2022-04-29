@@ -49,8 +49,8 @@ class SocieteRepositoryTest extends RepositoryBaseTest {
     @BeforeEach
     void setUp() {
         dto = SocieteDTOTestData.defaultDTO();
-        //entity = mapper.asEntity(dto);
-        entity = SocieteDTOTestData.defaultEntity(entity);
+        entity = mapper.asEntity(dto);
+        //entity = SocieteDTOTestData.defaultEntity(entity);
         societeRepository.deleteAll();
         entity = societeRepository.saveAndFlush(entity);
     }

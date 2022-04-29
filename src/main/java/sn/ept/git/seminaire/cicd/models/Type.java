@@ -24,13 +24,13 @@ import java.util.Set;
 @Where(clause = BaseEntity.CLAUSE)
 public class Type extends BaseEntity {
 
-    @NotBlank
+
     @Size(min = SizeMapping.Name.MIN, max = SizeMapping.Name.MAX)
     @Column(unique = true)
     private String name;
 
 
-    @NotBlank
+
     @Size(min = SizeMapping.Description.MIN, max = SizeMapping.Description.MAX)
     private String description;
 
