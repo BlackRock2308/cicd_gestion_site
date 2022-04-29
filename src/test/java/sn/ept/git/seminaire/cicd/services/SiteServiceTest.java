@@ -1,9 +1,7 @@
 package sn.ept.git.seminaire.cicd.services;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
@@ -11,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sn.ept.git.seminaire.cicd.data.ExerciceVMTestData;
 import sn.ept.git.seminaire.cicd.data.SiteVMTestData;
 import sn.ept.git.seminaire.cicd.data.TestData;
+import sn.ept.git.seminaire.cicd.dto.ExerciceDTO;
 import sn.ept.git.seminaire.cicd.dto.SiteDTO;
 import sn.ept.git.seminaire.cicd.dto.vm.SiteVM;
 import sn.ept.git.seminaire.cicd.exceptions.ItemExistsException;
@@ -49,7 +48,7 @@ class SiteServiceTest extends ServiceBaseTest {
 
     private static  Site site ;
     static  SiteVM vm ;
-    Site dto;
+    SiteDTO dto;
 
 
     @BeforeAll
@@ -62,12 +61,21 @@ class SiteServiceTest extends ServiceBaseTest {
     @BeforeEach
     void beforeEach(){
         log.info(" before each");
+        //service.save(vm);
+    }
+
+    @AfterEach
+    void afterEach(){
+        service.deleteAll();
     }
 
     @Test
+    @Rollback(value = false)
     void save_shouldSaveSite() {
         //dto =service.save(vm);
-        dto = siteRepository.save(site);
+        site = SiteVMTestData.defaultEntity(site);
+        site = siteRepository.save(site);
+        dto = mapper.asDTO(site);
         assertThat(dto)
                 .isNotNull();
                 //.hasNoNullFieldsOrProperties();
@@ -75,21 +83,21 @@ class SiteServiceTest extends ServiceBaseTest {
 
     @Test
     void save_withSameName_shouldThrowException() {
-        dto = siteRepository.save(site);
-        vm.setEmail(TestData.Update.email);
-        vm.setPhone(TestData.Update.phone);
+        site = SiteVMTestData.defaultEntity(site);
+        site = siteRepository.save(site);
+        site.setEmail(TestData.Update.email);
+        site.setPhone(TestData.Update.phone);
         assertThrows(
                 ItemExistsException.class,
-                () -> service.save(vm)
+                () -> siteRepository.save(site)
         );
     }
 
     @Test
     void save_withSamePhone_shouldThrowException() {
-        dto = siteRepository.save(site);
-        vm.setId(TestData.Update.id);
-        vm.setEmail(TestData.Update.email);
-        vm.setName(TestData.Update.name);
+        site = siteRepository.save(site);
+        site.setEmail(TestData.Update.email);
+        site.setName(TestData.Update.name);
         assertThrows(
                 ItemExistsException.class,
                 () -> service.save(vm)
@@ -97,10 +105,11 @@ class SiteServiceTest extends ServiceBaseTest {
     }
 
     @Test
+    @Order(1)
     void save_withSameEmail_shouldThrowException() {
-        dto = siteRepository.save(site);
-        vm.setPhone(TestData.Update.phone);
-        vm.setName(TestData.Update.name);
+        site = siteRepository.save(site);
+        site.setPhone(TestData.Update.phone);
+        site.setName(TestData.Update.name);
         assertThrows(
                 ItemExistsException.class,
                 () -> service.save(vm)
@@ -109,8 +118,9 @@ class SiteServiceTest extends ServiceBaseTest {
 
     @Test
     void findById_shouldReturnResult() {
-        dto = siteRepository.save(site);
-        final Optional<SiteDTO> optional = service.findById(dto.getId());
+        site = siteRepository.save(site);
+        vm = vmMapper.asDTO(site);
+        final Optional<SiteDTO> optional = service.findById(site.getId());
         assertThat(optional)
                 .isNotNull()
                 .isPresent()
@@ -129,9 +139,9 @@ class SiteServiceTest extends ServiceBaseTest {
     @Test
     @Rollback(value = false)
     void delete_shouldDeleteSite() {
-        dto = siteRepository.save(site);
+        site = siteRepository.save(site);
         long oldCount = siteRepository.count();
-        service.delete(dto.getId());
+        service.delete(site.getId());
         long newCount = siteRepository.count();
         assertThat(oldCount).isEqualTo(newCount+1);
     }
@@ -145,8 +155,18 @@ class SiteServiceTest extends ServiceBaseTest {
     }
 
 
+    @Test
+    void findAll_shouldReturnResult(){
+        site = SiteVMTestData.defaultEntity(site);
+        site = siteRepository.save(site);
+
+        List<SiteDTO> sites = service.findAll();
+        assertThat(sites.stream().count()).isGreaterThan(0);
+    }
+
+
 /*
-    findAll
+
     update
 */
 

@@ -23,13 +23,13 @@ import java.util.Set;
 @Where(clause = BaseEntity.CLAUSE)
 public class Tool extends BaseEntity{
 
-    @NotBlank
+    //@NotBlank
     @Size(min = SizeMapping.Name.MIN,max = SizeMapping.Name.MAX)
     @Column(unique = true)
     private  String name;
 
 
-    @NotBlank
+    //@NotBlank
     @Size(min = SizeMapping.Description.MIN,max = SizeMapping.Description.MAX)
     private  String description;
 

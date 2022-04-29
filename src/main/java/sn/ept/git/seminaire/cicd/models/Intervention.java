@@ -27,7 +27,6 @@ public class Intervention extends BaseEntity {
 
 
     @Builder.Default
-    @NotNull
     @Column(name = "start_date", updatable = false)
     private Instant start = Instant.now();
 
@@ -51,13 +50,13 @@ public class Intervention extends BaseEntity {
 
 
     @Where(clause = BaseEntity.CLAUSE)
-    @NotNull
+    //@NotNull
     @ManyToOne
     @JoinColumn(name = "id_site")
     private Site site;
 
     @Where(clause = BaseEntity.CLAUSE)
-    @NotNull
+    //@NotNull
     @ManyToOne
     @JoinColumn(name = "id_exercice")
     private Exercice exercice;

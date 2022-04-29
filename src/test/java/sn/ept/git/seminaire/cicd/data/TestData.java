@@ -2,9 +2,7 @@ package sn.ept.git.seminaire.cicd.data;
 
 import sn.ept.git.seminaire.cicd.enums.StatusExercice;
 import sn.ept.git.seminaire.cicd.enums.StatusIntervention;
-import sn.ept.git.seminaire.cicd.models.Agent;
-import sn.ept.git.seminaire.cicd.models.Intervention;
-import sn.ept.git.seminaire.cicd.models.Societe;
+import sn.ept.git.seminaire.cicd.models.*;
 import sn.ept.git.seminaire.cicd.utils.SizeMapping;
 
 import java.time.Instant;
@@ -47,6 +45,8 @@ public class TestData {
         public static final StatusIntervention statusIntervention = StatusIntervention.OPEN;
         public static  final Societe societe = new Societe();
         private static final Set<Intervention> intervention = new HashSet<>();
+        private static final Site site = new Site();
+        private static final Exercice exercice = new Exercice();
     }
 
 

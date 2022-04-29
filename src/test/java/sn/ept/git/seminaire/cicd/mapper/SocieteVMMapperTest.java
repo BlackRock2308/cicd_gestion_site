@@ -12,6 +12,7 @@ import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.test.context.event.annotation.BeforeTestExecution;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
+import sn.ept.git.seminaire.cicd.data.SocieteDTOTestData;
 import sn.ept.git.seminaire.cicd.data.SocieteVMTestData;
 import sn.ept.git.seminaire.cicd.dto.vm.SocieteVM;
 import sn.ept.git.seminaire.cicd.mappers.vm.SocieteVMMapper;
@@ -36,11 +37,13 @@ class SocieteDTOMapperTest extends  MapperBaseTest{
     @BeforeEach
     void setUp() {
         vm = SocieteVMTestData.defaultVM();
+        entity = SocieteDTOTestData.defaultEntity(entity);
     }
 
 
     @Test
     void toEntity() {
+        vm = mapper.asDTO(entity);
         entity = mapper.asEntity(vm);
         assertThat(entity).isNotNull();
         assertThat(entity.getId()).isEqualTo(vm.getId());

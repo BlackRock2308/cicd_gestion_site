@@ -1,9 +1,7 @@
 package sn.ept.git.seminaire.cicd.services;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,9 +9,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import sn.ept.git.seminaire.cicd.data.ExerciceVMTestData;
 import sn.ept.git.seminaire.cicd.data.SocieteDTOTestData;
 import sn.ept.git.seminaire.cicd.data.SocieteVMTestData;
 import sn.ept.git.seminaire.cicd.data.TestData;
+import sn.ept.git.seminaire.cicd.dto.ExerciceDTO;
 import sn.ept.git.seminaire.cicd.dto.SocieteDTO;
 import sn.ept.git.seminaire.cicd.dto.vm.SocieteVM;
 import sn.ept.git.seminaire.cicd.exceptions.ItemExistsException;
@@ -23,6 +23,7 @@ import sn.ept.git.seminaire.cicd.mappers.vm.SocieteVMMapper;
 import sn.ept.git.seminaire.cicd.models.Societe;
 import sn.ept.git.seminaire.cicd.repositories.SocieteRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -37,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Slf4j
 @SpringBootTest
 @Transactional()
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class SocieteServiceTest extends ServiceBaseTest {
 
     @Autowired
@@ -48,16 +50,15 @@ class SocieteServiceTest extends ServiceBaseTest {
     @Autowired
     ISocieteService service;
 
-    private static Societe societe;
+   Societe societe;
     static SocieteVM vm ;
-    Societe dto;
+    SocieteDTO dto;
 
 
-    @BeforeAll
+    @BeforeEach
     static void beforeAll(){
         log.info(" before all");
         vm = SocieteVMTestData.defaultVM();
-        societe = SocieteVMTestData.defaultEntity(societe);
     }
 
     @BeforeEach
@@ -65,10 +66,15 @@ class SocieteServiceTest extends ServiceBaseTest {
         log.info(" before each");
     }
 
+    @AfterEach
+    void afterEach(){
+        service.deleteAll();
+    }
+
     @Test
     @Rollback(value = false)
     void save_shouldSaveSociete() {
-        dto = societeRepository.save(societe);
+        dto = service.save(vm);
         assertThat(dto)
                 .isNotNull();
                 //.hasNoNullFieldsOrProperties();
@@ -76,10 +82,11 @@ class SocieteServiceTest extends ServiceBaseTest {
 
 
     @Test
+    @Order(1)
     void save_withSameName_shouldThrowException() {
-        dto = societeRepository.save(societe);
-        vm.setEmail(TestData.Update.email);
-        vm.setPhone(TestData.Update.phone);
+        societe = societeRepository.save(societe);
+        societe.setEmail(TestData.Update.email);
+        societe.setPhone(TestData.Update.phone);
         assertThrows(
                 ItemExistsException.class,
                 () -> service.save(vm)
@@ -87,10 +94,11 @@ class SocieteServiceTest extends ServiceBaseTest {
     }
 
     @Test
+    @Order(2)
     void save_withSamePhone_shouldThrowException() {
-    dto = societeRepository.save(societe);
-        vm.setEmail(TestData.Update.email);
-        vm.setAddress(TestData.Update.address);
+        societe = societeRepository.save(societe);
+        societe.setEmail(TestData.Update.email);
+        societe.setAddress(TestData.Update.address);
         assertThrows(
                 ItemExistsException.class,
                 () -> service.save(vm)
@@ -98,10 +106,11 @@ class SocieteServiceTest extends ServiceBaseTest {
     }
 
     @Test
+    @Order(3)
     void save_withSameEmail_shouldThrowException() {
-        dto = societeRepository.save(societe);
-        vm.setPhone(TestData.Update.phone);
-        vm.setAddress(TestData.Update.address);
+        societe = societeRepository.save(societe);
+        societe.setPhone(TestData.Update.phone);
+        societe.setAddress(TestData.Update.address);
         assertThrows(
                 ItemExistsException.class,
                 () -> service.save(vm)
@@ -110,8 +119,9 @@ class SocieteServiceTest extends ServiceBaseTest {
 
     @Test
     void findById_shouldReturnResult() {
-        dto = societeRepository.save(societe);
-        final Optional<SocieteDTO> optional = service.findById(dto.getId());
+        societe = societeRepository.save(societe);
+        vm = vmMapper.asDTO(societe);
+        final Optional<SocieteDTO> optional = service.findById(societe.getId());
         assertThat(optional)
                 .isNotNull()
                 .isPresent()
@@ -129,10 +139,10 @@ class SocieteServiceTest extends ServiceBaseTest {
 
     @Test
     void delete_shouldDeleteSociete() {
-        dto = societeRepository.save(societe);
-        long oldCount = societeRepository.count();
-        service.delete(dto.getId());
-        long newCount = societeRepository.count();
+        societe = societeRepository.save(societe);
+        long oldCount = service.findAll().stream().count();
+        service.delete(societe.getId());
+        long newCount = service.findAll().stream().count();
         assertThat(oldCount).isEqualTo(newCount+1);
     }
 
@@ -144,8 +154,18 @@ class SocieteServiceTest extends ServiceBaseTest {
         );
     }
 
+    @Test
+    void findAll_shouldReturnResult(){
+        vm = SocieteVMTestData.defaultVM();
+        dto = service.save(vm);
+
+        List<SocieteDTO>  societes = service.findAll();
+        assertThat(societes.stream().count()).isGreaterThan(0);
+    }
+
+
 /*
-    findAll
+
     update
 */
 

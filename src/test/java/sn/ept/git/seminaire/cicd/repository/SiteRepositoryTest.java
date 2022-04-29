@@ -12,6 +12,7 @@ import sn.ept.git.seminaire.cicd.mappers.SiteMapper;
 import sn.ept.git.seminaire.cicd.models.Site;
 import sn.ept.git.seminaire.cicd.models.Societe;
 import sn.ept.git.seminaire.cicd.repositories.SiteRepository;
+import sn.ept.git.seminaire.cicd.services.ISiteService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -35,8 +36,10 @@ class SiteRepositoryTest extends RepositoryBaseTest {
     SiteMapper mapper;
     SiteDTO dto;
 
+    @Autowired
+    @Valid
+    ISiteService service;
     Site entity;
-
 
 
     @BeforeEach

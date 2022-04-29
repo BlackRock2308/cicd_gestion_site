@@ -17,6 +17,7 @@ import sn.ept.git.seminaire.cicd.dto.SocieteDTO;
 import sn.ept.git.seminaire.cicd.mappers.SocieteMapper;
 import sn.ept.git.seminaire.cicd.models.Societe;
 import sn.ept.git.seminaire.cicd.repositories.SocieteRepository;
+import sn.ept.git.seminaire.cicd.services.ISocieteService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -39,7 +40,9 @@ class SocieteRepositoryTest extends RepositoryBaseTest {
     @Valid
     SocieteMapper mapper;
     SocieteDTO dto;
-
+    @Autowired
+    @Valid
+    ISocieteService service;
     Societe entity;
 
 
