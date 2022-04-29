@@ -44,9 +44,15 @@ public final class SiteDTOTestData extends TestData{
         return Site
                 .builder()
                 .id(Default.id)
+                .createdDate(Default.createdDate)
+                .lastModifiedDate(Default.lastModifiedDate)
+                .version(Default.version)
+                .deleted(Default.deleted)
+                .enabled(Default.enabled)
                 .name(Default.name)
                 .phone(Default.phone)
                 .email(Default.email)
+                .name(Default.name)
                 .longitude(Default.longitude)
                 .latitude(Default.latitude)
                 .build();

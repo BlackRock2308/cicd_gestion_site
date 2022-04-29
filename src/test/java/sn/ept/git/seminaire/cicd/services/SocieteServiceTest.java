@@ -90,7 +90,7 @@ class SocieteServiceTest extends ServiceBaseTest {
     void save_withSamePhone_shouldThrowException() {
     dto = societeRepository.save(societe);
         vm.setEmail(TestData.Update.email);
-        vm.setName(TestData.Update.name);
+        vm.setAddress(TestData.Update.address);
         assertThrows(
                 ItemExistsException.class,
                 () -> service.save(vm)
@@ -101,7 +101,7 @@ class SocieteServiceTest extends ServiceBaseTest {
     void save_withSameEmail_shouldThrowException() {
         dto = societeRepository.save(societe);
         vm.setPhone(TestData.Update.phone);
-        vm.setName(TestData.Update.name);
+        vm.setAddress(TestData.Update.address);
         assertThrows(
                 ItemExistsException.class,
                 () -> service.save(vm)

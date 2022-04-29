@@ -21,4 +21,7 @@ public interface SocieteRepository extends JpaRepository<Societe, UUID> {
 
     @Query("select s from Societe  s where s.email=:email")
     Optional<Societe> findByEmail(@Param("email") String email);
+
+    @Query("select s from Societe  s where s.id=:id")
+    Optional<Societe> findById(@Param("id") UUID id);
 }
