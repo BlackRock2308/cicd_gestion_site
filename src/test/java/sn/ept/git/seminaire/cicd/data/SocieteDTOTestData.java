@@ -24,8 +24,6 @@ public final class SocieteDTOTestData extends TestData {
                 .email(Default.email)
                 .longitude(Default.longitude)
                 .latitude(Default.latitude)
-                .sites((Set<SiteDTO>) Default.site1)
-                .exercices((Set<ExerciceDTO>) Default.exercice1)
                 .build();
     }
 
@@ -44,8 +42,6 @@ public final class SocieteDTOTestData extends TestData {
                 .email(Update.email)
                 .longitude(Update.longitude)
                 .latitude(Update.latitude)
-                .sites((Set<SiteDTO>) Default.site1)
-                .exercices((Set<ExerciceDTO>) Default.exercice1)
                 .build();
     }
     public static Societe Societe(){
@@ -65,4 +61,6 @@ public final class SocieteDTOTestData extends TestData {
                 .latitude(Default.latitude)
                 .build();
     }
+
+
 }
