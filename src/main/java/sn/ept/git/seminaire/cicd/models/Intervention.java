@@ -27,37 +27,34 @@ public class Intervention extends BaseEntity {
 
 
     @Builder.Default
-    @NotNull
     @Column(name = "start_date", updatable = false)
     private Instant start = Instant.now();
 
     @Builder.Default
-    @NotNull
     @Column(name = "end_date", updatable = false)
     private Instant end = Instant.now();
 
-    @NotBlank
+
     @Size(min = SizeMapping.Comment.MIN, max = SizeMapping.Comment.MAX)
     private String commentIn;
 
-    @NotBlank
+
     @Size(min = SizeMapping.Comment.MIN, max = SizeMapping.Comment.MAX)
     private String commentOut;
 
 
-    @NotNull
     @Enumerated(value = EnumType.STRING)
     private StatusIntervention status;
 
 
     @Where(clause = BaseEntity.CLAUSE)
-    @NotNull
+    //@NotNull
     @ManyToOne
     @JoinColumn(name = "id_site")
     private Site site;
 
     @Where(clause = BaseEntity.CLAUSE)
-    @NotNull
+    //@NotNull
     @ManyToOne
     @JoinColumn(name = "id_exercice")
     private Exercice exercice;

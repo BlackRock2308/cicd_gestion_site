@@ -13,6 +13,7 @@ import sn.ept.git.seminaire.cicd.mappers.vm.TypeVMMapper;
 import sn.ept.git.seminaire.cicd.models.Type;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.map;
 
 @ContextConfiguration
 @SpringBootTest
@@ -29,11 +30,13 @@ class TypeVMMapperTest extends  MapperBaseTest {
     @BeforeEach
     void setUp() {
         vm = TypeVMTestData.defaultVM();
+        entity = TypeVMTestData.defaultEntity(entity);
     }
 
 
     @Test
     void toEntity() {
+        vm = mapper.asDTO(entity);
         entity = mapper.asEntity(vm);
         assertThat(entity).isNotNull();
         assertThat(entity.getId()).isEqualTo(vm.getId());

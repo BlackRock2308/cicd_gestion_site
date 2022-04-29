@@ -44,7 +44,7 @@ public final class SocieteDTOTestData extends TestData {
                 .latitude(Update.latitude)
                 .build();
     }
-    public static Societe Societe(){
+    public static Societe defaultEntity(Societe societe){
         return Societe
                 .builder()
                 .id(Default.id)

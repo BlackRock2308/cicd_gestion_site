@@ -10,9 +10,12 @@ import sn.ept.git.seminaire.cicd.data.AgentDTOTestData;
 import sn.ept.git.seminaire.cicd.dto.AgentDTO;
 import sn.ept.git.seminaire.cicd.mappers.AgentMapper;
 import sn.ept.git.seminaire.cicd.models.Agent;
+import sn.ept.git.seminaire.cicd.models.Site;
+import sn.ept.git.seminaire.cicd.models.Societe;
 import sn.ept.git.seminaire.cicd.repositories.AgentRepository;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -50,6 +53,31 @@ class AgentRepositoryTest extends RepositoryBaseTest {
         //agentRepository.deleteAll();
     }
 
+    @Test
+    void givenRepository_save_shouldSaveAgent() {
+        //dto =service.save(vm);
+        entity = agentRepository.save(entity);
+        assertThat(entity)
+                .isNotNull();
+        //.hasNoNullFieldsOrProperties();
+    }
+
+    @Test
+    @Order(3)
+    void givenRepository_whenFindById_thenResult(){
+        Optional<Agent> optional = agentRepository.findById(entity.getId());
+        assertThat(optional).isNotNull();
+        assertThat(optional).isPresent();
+    }
+
+
+    @Test
+    @Order(2)
+    void givenRepository_whenFindAll_thenResult(){
+        List<Agent> agents = agentRepository.findAll();
+        assertThat(agents.size()).isGreaterThan(0);
+    }
+
 
     @Test
     void givenRepository_whenFindByEmail_thenResult() {
@@ -80,4 +108,15 @@ class AgentRepositoryTest extends RepositoryBaseTest {
         assertThat(optional).isNotNull();
         assertThat(optional).isNotPresent();
     }
+
+    @Test
+    void givenRepository_whenFindDeleted_thenNotFound() {
+        entity.setDeleted(true);
+        entity = agentRepository.saveAndFlush(entity);
+        Optional<Agent> optional = agentRepository.findByEmail(entity.getEmail());
+        assertThat(optional).isNotNull();
+        assertThat(optional).isNotPresent();
+    }
+
+
 }

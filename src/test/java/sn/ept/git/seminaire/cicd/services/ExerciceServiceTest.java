@@ -1,15 +1,14 @@
 package sn.ept.git.seminaire.cicd.services;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import sn.ept.git.seminaire.cicd.data.ExerciceVMTestData;
 
+import sn.ept.git.seminaire.cicd.dto.ExerciceDTO;
 import sn.ept.git.seminaire.cicd.dto.vm.ExerciceVM;
 import sn.ept.git.seminaire.cicd.exceptions.ItemNotFoundException;
 import sn.ept.git.seminaire.cicd.mappers.ExerciceMapper;
@@ -17,17 +16,14 @@ import sn.ept.git.seminaire.cicd.mappers.vm.ExerciceVMMapper;
 import sn.ept.git.seminaire.cicd.models.Exercice;
 import sn.ept.git.seminaire.cicd.repositories.ExerciceRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/*@SqlGroup({
-        @Sql("classpath:0_Exercice_data_test.sql"),
-        @Sql("classpath:1_Exercice_data_test.sql"),
-        @Sql("classpath:2_Exercice_data_test.sql"),
-})*/
+
 @Slf4j
 @SpringBootTest
 @Transactional()
@@ -44,7 +40,7 @@ class ExerciceServiceTest extends ServiceBaseTest {
 
     private static Exercice exercice;
     static  ExerciceVM vm ;
-    Exercice dto;
+    ExerciceDTO dto;
 
 
     @BeforeAll
@@ -59,11 +55,19 @@ class ExerciceServiceTest extends ServiceBaseTest {
         log.info(" before each");
     }
 
+    @AfterEach
+    void afterEach(){
+        service.deleteAll();
+    }
+
     @Test
     @Rollback(value = false)
+    @Order(1)
     void save_shouldSaveExercice() {
-        dto = exerciceRepository.save(exercice);
-        assertThat(dto)
+        exercice = ExerciceVMTestData.defaultEntity(exercice);
+        vm = vmMapper.asDTO(exercice);
+        exercice = exerciceRepository.save(exercice);
+        assertThat(exercice)
                 .isNotNull();
                 //.hasNoNullFieldsOrProperties();
     }
@@ -72,8 +76,8 @@ class ExerciceServiceTest extends ServiceBaseTest {
     @Test
     void findById_shouldReturnResult() {
         //dto =service.save(vm);
-        dto = exerciceRepository.save(exercice);
-        final Optional<Exercice> optional = exerciceRepository.findById(dto.getId());
+        exercice = exerciceRepository.save(exercice);
+        final Optional<ExerciceDTO> optional = service.findById(exercice.getId());
         assertThat(optional)
                 .isNotNull()
                 .isPresent()
@@ -84,7 +88,7 @@ class ExerciceServiceTest extends ServiceBaseTest {
 
     @Test
     void findById_withBadId_ShouldReturnNoResult() {
-        final Optional<Exercice> optional = exerciceRepository.findById(UUID.randomUUID());
+        final Optional<ExerciceDTO> optional = service.findById(UUID.randomUUID());
         assertThat(optional)
                 .isNotNull()
                 .isNotPresent();
@@ -92,12 +96,13 @@ class ExerciceServiceTest extends ServiceBaseTest {
 
 
     @Test
+    //@Order(2)
     void delete_shouldDeleteExercice() {
         //dto = exerciceRepository.save(vm);
-        dto = exerciceRepository.save(exercice);
-        long oldCount = exerciceRepository.count();
-        service.delete(dto.getId());
-        long newCount = exerciceRepository.count();
+        exercice = exerciceRepository.save(exercice);
+        long oldCount = service.findAll().stream().count();
+        service.delete(exercice.getId());
+        long newCount = service.findAll().stream().count();
         assertThat(oldCount).isEqualTo(newCount+1);
     }
 
@@ -111,9 +116,28 @@ class ExerciceServiceTest extends ServiceBaseTest {
         );
     }
 
-/*
-    findAll
-    update
+    @Test
+    @Order(3)
+    void findAll_shouldReturnResult(){
+        exercice = ExerciceVMTestData.defaultEntity(exercice);
+        exerciceRepository.save(exercice);
+        List<Exercice> exercices = exerciceRepository.findAll();
+
+        assertThat(exercices.stream().count()).isGreaterThan(0);
+    }
+
+    /*
+    @Test
+    void Update_shouldReturnResult(){
+        vm = ExerciceVMTestData.defaultVM();
+        dto = service.update(vm.getId(),vm);
+
+        assertThat(service.findById(dto.getId())).isEqualTo(vm.getId());
+
+    }
+
+
+
 */
 
 

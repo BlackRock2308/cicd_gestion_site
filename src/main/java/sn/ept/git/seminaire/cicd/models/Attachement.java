@@ -21,26 +21,25 @@ import javax.validation.constraints.Size;
 @Where(clause = Type.CLAUSE)
 public class Attachement extends BaseEntity{
 
-    @NotBlank
+    //@NotBlank
     @Size(min = SizeMapping.Name.MIN,max = SizeMapping.Name.MAX)
     private  String name;
 
-    @NotBlank
+    //@NotBlank
     @Size(min = SizeMapping.Description.MIN,max = SizeMapping.Description.MAX)
     private  String description;
 
     @Column(unique = true)
-    @NotBlank
+    //@NotBlank
     @Size(min = SizeMapping.Location.MIN,max = SizeMapping.Location.MAX)
     private  String location;
 
-    @NotBlank
+    //@NotBlank
     @Size(min = SizeMapping.Hash.MIN,max = SizeMapping.Hash.MAX)
     private  String hash;
 
 
     @Where(clause = BaseEntity.CLAUSE)
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "id_event")
     private Event  event;
