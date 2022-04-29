@@ -38,7 +38,7 @@ public final class SiteVMTestData extends TestData {
                 .build();
     }
 
-   /* public static Site defaultEntity(Site site) {
+    public static Site defaultEntity(Site site) {
         return Site
                 .builder()
                 .id(Default.id)
@@ -51,5 +51,6 @@ public final class SiteVMTestData extends TestData {
                 .societe(Default.societe)
                 .build();
 
-    }*/
+
+    }
 }
