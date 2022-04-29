@@ -40,8 +40,6 @@ class InterventionVMMapperTest extends  MapperBaseTest{
 
     @Test
     void toEntity() {
-        dto = mapper.asDTO(entity);
-        entity = mapper.asEntity(dto);
         assertThat(entity).isNotNull();
         assertThat(entity.getId()).isEqualTo(dto.getId());
         assertThat(entity.getCreatedDate()).isEqualTo(dto.getCreatedDate());
@@ -58,8 +56,6 @@ class InterventionVMMapperTest extends  MapperBaseTest{
 
     @Test
     void toVM() {
-        entity = mapper.asEntity(dto);
-        dto =mapper.asDTO(entity);
         assertThat(dto).isNotNull();
         assertThat(dto.getId()).isEqualTo(entity.getId());
         assertThat(dto.getCreatedDate()).isEqualTo(entity.getCreatedDate());

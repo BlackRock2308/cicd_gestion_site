@@ -43,8 +43,6 @@ class SocieteDTOMapperTest extends  MapperBaseTest{
 
     @Test
     void toEntity() {
-        vm = mapper.asDTO(entity);
-        entity = mapper.asEntity(vm);
         assertThat(entity).isNotNull();
         assertThat(entity.getId()).isEqualTo(vm.getId());
         assertThat(entity.getCreatedDate()).isEqualTo(vm.getCreatedDate());
@@ -62,8 +60,6 @@ class SocieteDTOMapperTest extends  MapperBaseTest{
 
     @Test
     void toDTO() {
-        entity = mapper.asEntity(vm);
-        vm =mapper.asDTO(entity);
         assertThat(vm).isNotNull();
         assertThat(vm.getId()).isEqualTo(entity.getId());
         assertThat(vm.getCreatedDate()).isEqualTo(entity.getCreatedDate());

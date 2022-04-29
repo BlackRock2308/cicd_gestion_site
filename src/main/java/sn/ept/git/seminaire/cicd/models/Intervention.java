@@ -31,20 +31,18 @@ public class Intervention extends BaseEntity {
     private Instant start = Instant.now();
 
     @Builder.Default
-    @NotNull
     @Column(name = "end_date", updatable = false)
     private Instant end = Instant.now();
 
-    @NotBlank
+
     @Size(min = SizeMapping.Comment.MIN, max = SizeMapping.Comment.MAX)
     private String commentIn;
 
-    @NotBlank
+
     @Size(min = SizeMapping.Comment.MIN, max = SizeMapping.Comment.MAX)
     private String commentOut;
 
 
-    @NotNull
     @Enumerated(value = EnumType.STRING)
     private StatusIntervention status;
 

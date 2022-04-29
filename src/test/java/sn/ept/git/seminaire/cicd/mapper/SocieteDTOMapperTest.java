@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import sn.ept.git.seminaire.cicd.data.SocieteDTOTestData;
+import sn.ept.git.seminaire.cicd.data.SocieteVMTestData;
 import sn.ept.git.seminaire.cicd.dto.SocieteDTO;
+import sn.ept.git.seminaire.cicd.dto.vm.SocieteVM;
 import sn.ept.git.seminaire.cicd.mappers.SocieteMapper;
+import sn.ept.git.seminaire.cicd.mappers.vm.SocieteVMMapper;
 import sn.ept.git.seminaire.cicd.models.Societe;
 
 import javax.transaction.Transactional;
@@ -20,55 +23,55 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 class SocieteVMMapperTest extends  MapperBaseTest{
 
-    SocieteDTO dto;
+
+    SocieteVM vm;
     Societe entity;
 
     @Autowired
-    private SocieteMapper mapper;
+    private SocieteVMMapper mapper;
 
 
     @BeforeEach
     void setUp() {
-        dto = SocieteDTOTestData.defaultDTO();
+        vm = SocieteVMTestData.defaultVM();
         entity = SocieteDTOTestData.defaultEntity(entity);
     }
 
 
     @Test
     void toEntity() {
-        dto = mapper.asDTO(entity);
-        entity = mapper.asEntity(dto);
+
         assertThat(entity).isNotNull();
-        assertThat(entity.getId()).isEqualTo(dto.getId());
-        assertThat(entity.getCreatedDate()).isEqualTo(dto.getCreatedDate());
-        assertThat(entity.getLastModifiedDate()).isEqualTo(dto.getLastModifiedDate());
-        assertThat(entity.getVersion()).isEqualTo(dto.getVersion());
-        assertThat(entity.isDeleted()).isEqualTo(dto.isDeleted());
-        assertThat(entity.isEnabled()).isEqualTo(dto.isEnabled());
-        assertThat(entity.getName()).isEqualTo(dto.getName());
-        assertThat(entity.getAddress()).isEqualTo(dto.getAddress());
-        assertThat(entity.getEmail()).isEqualTo(dto.getEmail());
-        assertThat(entity.getLongitude()).isEqualTo(dto.getLongitude());
-        assertThat(entity.getLatitude()).isEqualTo(dto.getLatitude());
-        assertThat(entity.getPhone()).isEqualTo(dto.getPhone());
+        assertThat(entity.getId()).isEqualTo(vm.getId());
+        assertThat(entity.getCreatedDate()).isEqualTo(vm.getCreatedDate());
+        assertThat(entity.getLastModifiedDate()).isEqualTo(vm.getLastModifiedDate());
+        assertThat(entity.getVersion()).isEqualTo(vm.getVersion());
+        assertThat(entity.isDeleted()).isEqualTo(vm.isDeleted());
+        assertThat(entity.isEnabled()).isEqualTo(vm.isEnabled());
+        assertThat(entity.getName()).isEqualTo(vm.getName());
+        assertThat(entity.getAddress()).isEqualTo(vm.getAddress());
+        assertThat(entity.getEmail()).isEqualTo(vm.getEmail());
+        assertThat(entity.getLongitude()).isEqualTo(vm.getLongitude());
+        assertThat(entity.getLatitude()).isEqualTo(vm.getLatitude());
+        assertThat(entity.getPhone()).isEqualTo(vm.getPhone());
     }
 
     @Test
     void toVM() {
-        entity = mapper.asEntity(dto);
-        dto =mapper.asDTO(entity);
-        assertThat(dto).isNotNull();
-        assertThat(dto.getId()).isEqualTo(entity.getId());
-        assertThat(dto.getCreatedDate()).isEqualTo(entity.getCreatedDate());
-        assertThat(dto.getLastModifiedDate()).isEqualTo(entity.getLastModifiedDate());
-        assertThat(dto.getVersion()).isEqualTo(entity.getVersion());
-        assertThat(dto.isDeleted()).isEqualTo(entity.isDeleted());
-        assertThat(dto.isEnabled()).isEqualTo(entity.isEnabled());
-        assertThat(dto.getName()).isEqualTo(entity.getName());
-        assertThat(dto.getAddress()).isEqualTo(entity.getAddress());
-        assertThat(dto.getEmail()).isEqualTo(entity.getEmail());
-        assertThat(dto.getLongitude()).isEqualTo(entity.getLongitude());
-        assertThat(dto.getLatitude()).isEqualTo(entity.getLatitude());
-        assertThat(dto.getPhone()).isEqualTo(entity.getPhone());
+        entity = mapper.asEntity(vm);
+        vm =mapper.asDTO(entity);
+        assertThat(entity).isNotNull();
+        assertThat(entity.getId()).isEqualTo(entity.getId());
+        assertThat(entity.getCreatedDate()).isEqualTo(entity.getCreatedDate());
+        assertThat(entity.getLastModifiedDate()).isEqualTo(entity.getLastModifiedDate());
+        assertThat(entity.getVersion()).isEqualTo(entity.getVersion());
+        assertThat(entity.isDeleted()).isEqualTo(entity.isDeleted());
+        assertThat(entity.isEnabled()).isEqualTo(entity.isEnabled());
+        assertThat(entity.getName()).isEqualTo(entity.getName());
+        assertThat(entity.getAddress()).isEqualTo(entity.getAddress());
+        assertThat(entity.getEmail()).isEqualTo(entity.getEmail());
+        assertThat(entity.getLongitude()).isEqualTo(entity.getLongitude());
+        assertThat(entity.getLatitude()).isEqualTo(entity.getLatitude());
+        assertThat(entity.getPhone()).isEqualTo(entity.getPhone());
     }
 }
