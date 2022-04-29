@@ -2,6 +2,8 @@ package sn.ept.git.seminaire.cicd.data;
 
 import sn.ept.git.seminaire.cicd.enums.StatusExercice;
 import sn.ept.git.seminaire.cicd.enums.StatusIntervention;
+import sn.ept.git.seminaire.cicd.models.Exercice;
+import sn.ept.git.seminaire.cicd.models.Site;
 import sn.ept.git.seminaire.cicd.utils.SizeMapping;
 
 import java.time.Instant;
@@ -40,6 +42,8 @@ public class TestData {
         public static final Instant end =Instant.now();
         public static final StatusExercice status = null;
         public static final StatusIntervention statusIntervention =null;
+        public static final Site site1= new Site() ;
+        public static final Exercice exercice1 = new Exercice();
 
     }
 
@@ -71,6 +75,8 @@ public class TestData {
         public static final Instant start = Instant.now();
         public static final Instant end =Instant.now();
         public static final StatusExercice status = null;
+        public static final Site site1= new Site() ;
+        public static final Exercice exercice1 = new Exercice();
 
     }
 

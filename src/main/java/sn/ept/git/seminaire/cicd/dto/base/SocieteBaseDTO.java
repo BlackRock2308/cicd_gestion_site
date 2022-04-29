@@ -20,13 +20,13 @@ public class SocieteBaseDTO extends BaseDTO {
 
     @NotBlank
     @Size(min = SizeMapping.Name.MIN,max = SizeMapping.Name.MIN)
-    private  String name;
+    private  String name="";
     @Size(min = SizeMapping.Adresse.MIN,max = SizeMapping.Adresse.MIN)
-    private  String address;
+    private  String address="";
     @Size(min = SizeMapping.Phone.MIN,max = SizeMapping.Phone.MIN)
-    private  String phone;
+    private  String phone="";
     @Size(min = SizeMapping.Email.MIN,max = SizeMapping.Email.MIN)
-    private String email;
+    private String email="";
     private float longitude;
     private float latitude;
 

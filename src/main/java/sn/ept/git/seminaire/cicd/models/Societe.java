@@ -25,7 +25,7 @@ import java.util.Set;
 @Where(clause = BaseEntity.CLAUSE)
 public class Societe extends BaseEntity {
 
-    @NotBlank
+
     @Size(min = SizeMapping.Name.MIN, max = SizeMapping.Name.MAX)
     @Column(unique = true)
     private String name;
