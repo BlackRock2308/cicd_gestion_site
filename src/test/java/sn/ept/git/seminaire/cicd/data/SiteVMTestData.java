@@ -51,5 +51,6 @@ public final class SiteVMTestData extends TestData {
                 .societe(Default.societe)
                 .build();
 
+
     }
 }

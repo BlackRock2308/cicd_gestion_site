@@ -36,7 +36,7 @@ class SiteDTOMapperTest extends  MapperBaseTest{
     @BeforeEach
     void setUp() {
         vm = SiteVMTestData.defaultVM();
-        entity = SiteVMTestData.defaultEntity(entity);
+       // entity = SiteVMTestData.defaultEntity(entity);
     }
 
 

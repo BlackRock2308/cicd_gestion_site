@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import sn.ept.git.seminaire.cicd.dto.base.SiteBaseDTO;
 
+import java.util.Set;
+
 @SuperBuilder
 @Data
 @AllArgsConstructor
@@ -14,7 +16,7 @@ public class SiteDTO extends SiteBaseDTO {
 
     private SocieteDTO societe;
 
-    //private Set<InterventionDTO> interventions;
-    //private Set<AgentDTO> agents;
+    private Set<InterventionDTO> interventions;
+    private Set<AgentDTO> agents;
 
 }

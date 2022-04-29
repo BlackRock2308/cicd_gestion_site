@@ -59,4 +59,5 @@ public class Site extends BaseEntity {
     @ManyToMany(mappedBy = "sites", fetch = FetchType.LAZY)
     private Set<Agent> agents = new HashSet<>();
 
+
 }
