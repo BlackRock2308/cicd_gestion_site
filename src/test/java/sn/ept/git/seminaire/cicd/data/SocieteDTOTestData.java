@@ -1,7 +1,11 @@
 package sn.ept.git.seminaire.cicd.data;
 
+import sn.ept.git.seminaire.cicd.dto.ExerciceDTO;
+import sn.ept.git.seminaire.cicd.dto.SiteDTO;
 import sn.ept.git.seminaire.cicd.dto.SocieteDTO;
 import sn.ept.git.seminaire.cicd.models.Societe;
+
+import java.util.Set;
 
 public final class SocieteDTOTestData extends TestData {
 
@@ -18,9 +22,10 @@ public final class SocieteDTOTestData extends TestData {
                 .address(Default.address)
                 .phone(Default.phone)
                 .email(Default.email)
-                .name(Default.name)
                 .longitude(Default.longitude)
                 .latitude(Default.latitude)
+                .sites((Set<SiteDTO>) Default.site1)
+                .exercices((Set<ExerciceDTO>) Default.exercice1)
                 .build();
     }
 
@@ -39,10 +44,11 @@ public final class SocieteDTOTestData extends TestData {
                 .email(Update.email)
                 .longitude(Update.longitude)
                 .latitude(Update.latitude)
+                .sites((Set<SiteDTO>) Default.site1)
+                .exercices((Set<ExerciceDTO>) Default.exercice1)
                 .build();
     }
-
-    public static Societe defaultEntity(Societe entity) {
+    public static Societe Societe(){
         return Societe
                 .builder()
                 .id(Default.id)
@@ -55,7 +61,6 @@ public final class SocieteDTOTestData extends TestData {
                 .address(Default.address)
                 .phone(Default.phone)
                 .email(Default.email)
-                .name(Default.name)
                 .longitude(Default.longitude)
                 .latitude(Default.latitude)
                 .build();

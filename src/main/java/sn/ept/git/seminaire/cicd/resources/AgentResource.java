@@ -41,7 +41,7 @@ public class AgentResource {
         AgentDTO created = service.save(vm);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}")
+                .path("/{uuid}")
                 .buildAndExpand(created.getId())
                 .toUri();
         return ResponseEntity.created(location).body(created);

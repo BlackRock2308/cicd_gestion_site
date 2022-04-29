@@ -40,8 +40,7 @@ public final class SocieteVMTestData extends TestData {
                 .latitude(Update.latitude)
                 .build();
     }
-
-    public static Societe defaultEntity(Societe societe) {
+    public static Societe Societe(){
         return Societe
                 .builder()
                 .id(Default.id)
