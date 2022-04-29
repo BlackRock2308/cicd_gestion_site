@@ -39,10 +39,10 @@ public class Site extends BaseEntity {
 
     private float latitude;
 
-    @Where(clause = CLAUSE)
+    /*@Where(clause = CLAUSE)
     @ManyToOne(cascade = CascadeType.ALL) //adding cascadeType.ALL for test
     @JoinColumn(name = "id_societe")
-    private Societe societe;
+    private Societe societe;*/
 
     @Where(clause = CLAUSE)
     @JsonIgnore
@@ -58,5 +58,6 @@ public class Site extends BaseEntity {
     @ToString.Exclude
     @ManyToMany(mappedBy = "sites", fetch = FetchType.LAZY)
     private Set<Agent> agents = new HashSet<>();
+
 
 }
