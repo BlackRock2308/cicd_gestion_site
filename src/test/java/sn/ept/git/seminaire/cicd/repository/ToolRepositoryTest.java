@@ -1,7 +1,6 @@
 package sn.ept.git.seminaire.cicd.repository;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,12 +22,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @ContextConfiguration
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ToolRepositoryTest extends RepositoryBaseTest {
 
     @Autowired
     @Valid
-    ToolRepository repository;
+    ToolRepository toolRepository;
     @Autowired
     @Valid
     ToolMapper mapper;
@@ -41,21 +40,23 @@ class ToolRepositoryTest extends RepositoryBaseTest {
     @BeforeEach
     void setUp() {
         dto = ToolDTOTestData.defaultDTO();
-        entity = mapper.asEntity(dto);
-        repository.deleteAll();
-        entity = repository.saveAndFlush(entity);
+        //entity = mapper.asEntity(dto);
+        entity = ToolDTOTestData.defaultEntity(entity);
+        toolRepository.deleteAll();
+        entity = toolRepository.saveAndFlush(entity);
     }
 
     @Test
     void givenRepository_whenFindByName_thenResult() {
-        Optional<Tool> optional = repository.findByName(entity.getName());
+        Optional<Tool> optional = toolRepository.findByName(entity.getName());
         assertThat(optional).isNotNull();
         assertThat(optional).isPresent();
     }
 
     @Test
+    @Order(1)
     void givenRepository_whenFindByBadName_thenNotFound() {
-        Optional<Tool> optional = repository.findByName(UUID.randomUUID().toString());
+        Optional<Tool> optional = toolRepository.findByName(UUID.randomUUID().toString());
         assertThat(optional).isNotNull();
         assertThat(optional).isNotPresent();
     }
@@ -63,8 +64,8 @@ class ToolRepositoryTest extends RepositoryBaseTest {
     @Test
     void givenRepository_whenFindDeleted_thenNotFound() {
         entity.setDeleted(true);
-        entity = repository.saveAndFlush(entity);
-        Optional<Tool> optional = repository.findByName(entity.getName());
+        entity = toolRepository.saveAndFlush(entity);
+        Optional<Tool> optional = toolRepository.findByName(entity.getName());
         assertThat(optional).isNotNull();
         assertThat(optional).isNotPresent();
     }

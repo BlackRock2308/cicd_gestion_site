@@ -31,7 +31,7 @@ public final class ExerciceDTOTestData extends TestData {
                 .build();
     }
 
-    public static Exercice defaultEntity(ExerciceDTO dto) {
+    public static Exercice defaultEntity(ExerciceDTO exercice) {
         {
             return Exercice
                     .builder()
@@ -43,6 +43,28 @@ public final class ExerciceDTOTestData extends TestData {
                     .enabled(Default.enabled)
                     .start(Default.start)
                     .end(Default.end)
+                    .status(Default.status)
+                    .societe(Default.societe)
+                    .end(Default.end)
+                    .start(Default.start)
+                    .build();
+        }
+    }
+    public static Exercice defaultEntityExercice(Exercice exercice) {
+        {
+            return Exercice
+                    .builder()
+                    .id(Default.id)
+                    .createdDate(Default.createdDate)
+                    .lastModifiedDate(Default.lastModifiedDate)
+                    .version(Default.version)
+                    .deleted(Default.deleted)
+                    .enabled(Default.enabled)
+                    .start(Default.start)
+                    .end(Default.end)
+                    .name(Default.name)
+                    .start(Default.start)
+                    .societe(Default.societe)
                     .status(Default.status)
                     .build();
         }

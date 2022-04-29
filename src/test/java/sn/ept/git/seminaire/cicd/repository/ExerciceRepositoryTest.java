@@ -1,7 +1,9 @@
 package sn.ept.git.seminaire.cicd.repository;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,12 +25,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @ContextConfiguration
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ExerciceRepositoryTest extends RepositoryBaseTest {
 
     @Autowired
     @Valid
-    ExerciceRepository repository;
+    ExerciceRepository exerciceRepository;
     @Autowired
     @Valid
     ExerciceMapper mapper;
@@ -37,25 +39,26 @@ class ExerciceRepositoryTest extends RepositoryBaseTest {
     Exercice entity;
 
 
-
     @BeforeEach
     void setUp() {
         dto = ExerciceDTOTestData.defaultDTO();
-        entity = mapper.asEntity(dto);
-        repository.deleteAll();
-        entity = repository.saveAndFlush(entity);
+        //entity = mapper.asEntity(dto);
+        entity = ExerciceDTOTestData.defaultEntityExercice(entity);
+        exerciceRepository.deleteAll();
+        entity = exerciceRepository.saveAndFlush(entity);
     }
 
     @Test
     void givenRepository_whenFindByDate_thenResult() {
-        Optional<Exercice> optional = repository.findByDates(entity.getStart());
+        entity = ExerciceDTOTestData.defaultEntityExercice(entity);
+        Optional<Exercice> optional = exerciceRepository.findByDates(entity.getStart());
         assertThat(optional).isNotNull();
         assertThat(optional).isPresent();
     }
 
     @Test
     void givenRepository_whenFindByBadDate_thenNotFound() {
-        Optional<Exercice> optional = repository.findByDates(entity.getStart());
+        Optional<Exercice> optional = exerciceRepository.findByDates(entity.getStart());
         assertThat(optional).isNotNull();
         assertThat(optional).isNotPresent();
     }

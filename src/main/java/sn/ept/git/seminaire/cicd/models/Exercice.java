@@ -26,27 +26,22 @@ import java.util.Set;
 public class Exercice extends BaseEntity {
 
 
-    @NotBlank
     @Size(min = SizeMapping.Name.MIN, max = SizeMapping.Name.MAX)
     private String name;
 
     @Builder.Default
-    @NotNull
     @Column(name = "start_date", updatable = false)
     private Instant start = Instant.now();
 
     @Builder.Default
-    @NotNull
     @Column(name = "end_date", updatable = false)
     private Instant end = Instant.now();
 
-    @NotNull
     @Enumerated(value = EnumType.STRING)
     private StatusExercice status;
 
 
     @Where(clause = BaseEntity.CLAUSE)
-    @NotNull
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_societe")
     private Societe societe;
@@ -58,7 +53,7 @@ public class Exercice extends BaseEntity {
     @OneToMany(
             mappedBy = "exercice",
             fetch = FetchType.LAZY,
-            cascade = {CascadeType.ALL, CascadeType.MERGE}
+            cascade = {CascadeType.ALL}
     )
     private Set<Intervention> interventions = new HashSet<>();
 }

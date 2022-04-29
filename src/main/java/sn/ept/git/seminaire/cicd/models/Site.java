@@ -25,7 +25,6 @@ import java.util.Set;
 @Where(clause = BaseEntity.CLAUSE)
 public class Site extends BaseEntity {
 
-    @NotBlank
     @Size(min = SizeMapping.Name.MIN, max = SizeMapping.Name.MAX)
     @Column(unique = true)
     private String name;
@@ -41,8 +40,7 @@ public class Site extends BaseEntity {
     private float latitude;
 
     @Where(clause = CLAUSE)
-    @NotNull
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL) //adding cascadeType.ALL for test
     @JoinColumn(name = "id_societe")
     private Societe societe;
 

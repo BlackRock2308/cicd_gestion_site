@@ -16,7 +16,6 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class SiteBaseDTO extends BaseDTO {
 
-    @NotBlank
     @Size(min = SizeMapping.Name.MIN, max = SizeMapping.Name.MIN)
     private String name;
     @NotBlank

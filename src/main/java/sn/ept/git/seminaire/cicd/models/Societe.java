@@ -61,7 +61,7 @@ public class Societe extends BaseEntity {
     @OneToMany(
             mappedBy = "societe",
             fetch = FetchType.EAGER,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+            cascade = {CascadeType.ALL}
     )
     private Set<Exercice> exercices = new HashSet<>();
 

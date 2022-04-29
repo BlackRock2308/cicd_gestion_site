@@ -9,10 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import sn.ept.git.seminaire.cicd.data.ExerciceVMTestData;
-import sn.ept.git.seminaire.cicd.data.TestData;
-import sn.ept.git.seminaire.cicd.dto.ExerciceDTO;
+
 import sn.ept.git.seminaire.cicd.dto.vm.ExerciceVM;
-import sn.ept.git.seminaire.cicd.exceptions.ItemExistsException;
 import sn.ept.git.seminaire.cicd.exceptions.ItemNotFoundException;
 import sn.ept.git.seminaire.cicd.mappers.ExerciceMapper;
 import sn.ept.git.seminaire.cicd.mappers.vm.ExerciceVMMapper;
